@@ -1,0 +1,70 @@
+[25-Aug-2023 08:26:57 UTC] PHP Fatal error:  Uncaught Error: Class "WpOrg\Requests\Utility\InputValidator" not found in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/Requests/src/Requests.php:635
+Stack trace:
+#0 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-http.php(14): WpOrg\Requests\Requests::set_certificate_path('/home/futbolowo...')
+#1 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-settings.php(242): require('/home/futbolowo...')
+#2 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-admin/setup-config.php(33): require('/home/futbolowo...')
+#3 {main}
+  thrown in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/Requests/src/Requests.php on line 635
+[25-Aug-2023 08:39:57 UTC] PHP Warning:  file_get_contents(/home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/hello.php): Failed to open stream: No such file or directory in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/functions.php on line 6691
+[25-Aug-2023 09:03:58 UTC] PHP Warning:  Attempt to read property "title" on null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-customize-widgets.php on line 905
+[25-Aug-2023 09:06:31 UTC] PHP Warning:  Attempt to read property "title" on null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-customize-widgets.php on line 905
+[25-Aug-2023 09:06:53 UTC] PHP Warning:  Attempt to read property "title" on null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-customize-widgets.php on line 905
+[25-Aug-2023 09:07:52 UTC] PHP Warning:  Attempt to read property "title" on null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-customize-widgets.php on line 905
+[06-Sep-2023 14:02:11 UTC] PHP Warning:  Undefined variable $wp_version in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/modula-best-grid-gallery/includes/admin/tinymce-galleries.php on line 20
+[06-Sep-2023 14:03:19 UTC] PHP Warning:  Undefined variable $settings in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/modula-best-grid-gallery/includes/admin/templates/modal/modula-modal-albums-upgrade.php on line 2
+[06-Sep-2023 14:03:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/modula-best-grid-gallery/includes/admin/templates/modal/modula-modal-albums-upgrade.php on line 2
+[06-Sep-2023 14:03:19 UTC] PHP Warning:  Undefined variable $settings in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/modula-best-grid-gallery/includes/admin/templates/modal/modula-modal-albums-upgrade.php on line 2
+[06-Sep-2023 14:03:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/modula-best-grid-gallery/includes/admin/templates/modal/modula-modal-albums-upgrade.php on line 2
+[06-Sep-2023 14:04:38 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "WTWP_URL" in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/album-and-image-gallery-plus-lightbox/includes/admin/settings/solution-features/popup-ess-bundle-tab.php:92
+Stack trace:
+#0 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/album-and-image-gallery-plus-lightbox/includes/admin/settings/solution-features/solutions-features.php(144): include_once()
+#1 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/album-and-image-gallery-plus-lightbox/includes/admin/class-aigpl-admin.php(334): include_once('/home/futbolowo...')
+#2 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-hook.php(310): Aigpl_Admin->aigpl_solutions_features_page('')
+#3 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-hook.php(334): WP_Hook->apply_filters('', Array)
+#4 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#5 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-admin/admin.php(259): do_action('aigpl_gallery_p...')
+#6 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-admin/edit.php(10): require_once('/home/futbolowo...')
+#7 {main}
+  thrown in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/album-and-image-gallery-plus-lightbox/includes/admin/settings/solution-features/popup-ess-bundle-tab.php on line 92
+[07-Sep-2023 13:52:58 UTC] PHP Warning:  unlink(/home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/wp-scss/cache/main.css): No such file or directory in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/plugins/wp-scss/class/class-wp-scss.php on line 108
+[07-Sep-2023 16:57:30 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "CHILD_THEME_VERSION" in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/themes/villanova/functions.php:18
+Stack trace:
+#0 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-hook.php(310): wp_blank_setup('')
+#1 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-hook.php(334): WP_Hook->apply_filters(NULL, Array)
+#2 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#3 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-settings.php(610): do_action('after_setup_the...')
+#4 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-config.php(96): require_once('/home/futbolowo...')
+#5 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-load.php(50): require_once('/home/futbolowo...')
+#6 /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-admin/admin-ajax.php(22): require_once('/home/futbolowo...')
+#7 {main}
+  thrown in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-content/themes/villanova/functions.php on line 18
+[21-Sep-2023 08:20:26 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:20:29 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:20:33 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:20:37 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:20:40 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:20:44 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:11 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:14 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:18 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:21 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:25 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:21:28 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:18 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:22 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:25 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:29 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:32 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:22:35 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:30 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:34 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:38 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:42 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:46 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:40:49 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:21 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:25 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:29 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:32 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:36 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584
+[21-Sep-2023 08:42:39 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 17479680 bytes) in /home/futbolowo/public_html/imperit.pl/dev/villanova/wp-includes/class-wp-image-editor.php on line 584

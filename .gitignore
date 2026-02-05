@@ -1,0 +1,6 @@
+wordpress/wp-content/uploads
+wordpress/wp-content/cache
+wordpress/wp-content/updraft
+wordpress/wp-config.php
+
+*.DS_Store
