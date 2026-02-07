@@ -309,18 +309,21 @@ function custom_breadcrumbs() {
 
 	// Single post
 	elseif (is_single() && !is_attachment()) {
+		$post_type = get_post_type();
+		$post_type_object = get_post_type_object($post_type);
 
-		// If CPT archive exists
-		$post_type = get_post_type_object(get_post_type());
-		if ($post_type && !is_singular('post')) {
-			echo breadcrumb_link(get_post_type_archive_link($post_type->name), $post_type->labels->name, $position++);
+		// Add CPT archive link (but NOT for 'usluga' since it has no archive)
+		if ($post_type_object && !is_singular('post') && $post_type !== 'usluga' && get_post_type_archive_link($post_type)) {
+			echo breadcrumb_link(get_post_type_archive_link($post_type), $post_type_object->labels->name, $position++);
 		}
 
-		// Parent pages (if any)
 		if ($post->post_parent) {
 			$parents = array_reverse(get_post_ancestors($post->ID));
 			foreach ($parents as $parent) {
-				echo breadcrumb_link(get_permalink($parent), get_the_title($parent), $position++);
+				$parent_url = get_permalink($parent);
+				// Extra safety: ensure no /usluga/ in URL
+				$parent_url = str_replace('/usluga/', '/', $parent_url);
+				echo breadcrumb_link($parent_url, get_the_title($parent), $position++);
 			}
 		}
 
