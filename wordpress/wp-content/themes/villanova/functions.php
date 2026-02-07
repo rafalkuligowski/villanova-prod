@@ -92,6 +92,26 @@ add_filter('pll_get_post_types', function($post_types) {
     return $post_types;
 });
 
+// Remove 'usluga' slug from permalinks - works in admin and frontend
+add_filter('post_type_link', function($post_link, $post, $leavename) {
+    if ('usluga' !== $post->post_type || 'publish' !== $post->post_status) {
+        return $post_link;
+    }
+
+    // Remove the post type slug from the URL
+    $post_link = str_replace('/' . $post->post_type . '/', '/', $post_link);
+
+    return $post_link;
+}, 10, 3);
+
+// Also filter get_permalink to ensure consistency everywhere
+add_filter('get_permalink', function($permalink, $post) {
+    if (is_object($post) && $post->post_type === 'usluga' && $post->post_status === 'publish') {
+        $permalink = str_replace('/' . $post->post_type . '/', '/', $permalink);
+    }
+    return $permalink;
+}, 10, 2);
+
 // Add alternative root-level rewrite rules for usluga
 add_action('init', function() {
     // Single level: /slug
