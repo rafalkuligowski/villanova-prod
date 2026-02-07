@@ -262,64 +262,125 @@ add_filter('pll_check_canonical_url', '__return_false', 999);
 
 
 function custom_breadcrumbs() {
-	// Separator i opcje
-	$separator = ' / ';
-	$home_title = pll__('Strona główna'); // Tłumaczenie ciągu z Polylang
-	$blog_page_title = pll__('Blog'); // Tytuł strony bloga
-
-	// Globalne zmienne
-	global $post;
-
-	echo '<nav class="breadcrumbs">';
-
-	// Link do strony głównej
-	echo '<a href="' . home_url() . '">' . $home_title . '</a>';
-
-	if (!is_front_page()) {
-		echo $separator;
-
-		if (is_home()) {
-			echo '<span class="current">' . $blog_page_title . '</span>';
-		} elseif (is_single()) {
-
-			$parent_id = $post->post_parent;
-
-			if ($parent_id) {
-				// Pobierz rodzica i jego breadcrumb
-				$parent = get_post($parent_id);
-				echo '<a href="' . get_permalink($parent) . '">' . get_the_title($parent) . '</a>' . $separator;
-			}
-
-			echo '<span class="current">' . get_the_title() . '</span>';
-		} elseif (is_page()) {
-			if ($post->post_parent) {
-				$parents = get_post_ancestors($post->ID);
-				$parents = array_reverse($parents);
-				foreach ($parents as $parent) {
-					echo '<a href="' . get_permalink($parent) . '">' . get_the_title($parent) . '</a>' . $separator;
-				}
-			}
-			echo '<span class="current">' . get_the_title() . '</span>';
-		} elseif (is_category()) {
-			// Jeśli to kategoria
-			echo '<span class="current">' . single_cat_title('', false) . '</span>';
-		} elseif (is_tag()) {
-			// Jeśli to tag
-			echo '<span class="current">' . single_tag_title('', false) . '</span>';
-		} elseif (is_search()) {
-			// Jeśli to wyniki wyszukiwania
-			echo '<span class="current">Wyniki wyszukiwania dla: "' . get_search_query() . '"</span>';
-		} elseif (is_archive()) {
-			// Jeśli to archiwum
-			echo '<span class="current">' . post_type_archive_title('', false) . '</span>';
-		} elseif (is_404()) {
-			// Jeśli to strona 404
-			echo '<span class="current">' . pll__('Strona nie znaleziona') . '</span>';
-		}
+	if (is_front_page()) {
+		return;
 	}
 
+	$home_title = pll__('Strona główna');
+	$position   = 1;
+
+	global $post;
+
+	echo '<nav class="breadcrumbs" aria-label="Breadcrumbs">';
+	echo '<ol itemscope itemtype="https://schema.org/BreadcrumbList">';
+
+	// Home
+	echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+	echo '<a itemprop="item" href="' . esc_url(home_url('/')) . '">';
+	echo '<span itemprop="name">' . esc_html($home_title) . '</span>';
+	echo '</a>';
+	echo '<meta itemprop="position" content="' . $position++ . '">';
+	echo '</li>';
+
+	// Blog page
+	if (is_home()) {
+		echo breadcrumb_current(pll__('Blog'), $position);
+	}
+
+	// Single post
+	elseif (is_single() && !is_attachment()) {
+
+		// If CPT archive exists
+		$post_type = get_post_type_object(get_post_type());
+		if ($post_type && !is_singular('post')) {
+			echo breadcrumb_link(get_post_type_archive_link($post_type->name), $post_type->labels->name, $position++);
+		}
+
+		// Parent pages (if any)
+		if ($post->post_parent) {
+			$parents = array_reverse(get_post_ancestors($post->ID));
+			foreach ($parents as $parent) {
+				echo breadcrumb_link(get_permalink($parent), get_the_title($parent), $position++);
+			}
+		}
+
+		echo breadcrumb_current(get_the_title(), $position);
+	}
+
+	// Pages
+	elseif (is_page()) {
+		if ($post->post_parent) {
+			$parents = array_reverse(get_post_ancestors($post->ID));
+			foreach ($parents as $parent) {
+				echo breadcrumb_link(get_permalink($parent), get_the_title($parent), $position++);
+			}
+		}
+		echo breadcrumb_current(get_the_title(), $position);
+	}
+
+	// Category
+	elseif (is_category()) {
+		echo breadcrumb_current(single_cat_title('', false), $position);
+	}
+
+	// Tag
+	elseif (is_tag()) {
+		echo breadcrumb_current(single_tag_title('', false), $position);
+	}
+
+	// Search
+	elseif (is_search()) {
+		echo breadcrumb_current(
+			sprintf('%s "%s"', pll__('Wyniki wyszukiwania dla'), get_search_query()),
+			$position
+		);
+	}
+
+	// Archive
+	elseif (is_archive()) {
+		echo breadcrumb_current(post_type_archive_title('', false), $position);
+	}
+
+	// 404
+	elseif (is_404()) {
+		echo breadcrumb_current(pll__('Strona nie znaleziona'), $position);
+	}
+
+	echo '</ol>';
 	echo '</nav>';
 }
+
+/**
+ * Helper: linked breadcrumb
+ */
+function breadcrumb_link($url, $title, $position) {
+	return sprintf(
+		'<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<a itemprop="item" href="%s">
+				<span itemprop="name">%s</span>
+			</a>
+			<meta itemprop="position" content="%d">
+		</li>',
+		esc_url($url),
+		esc_html($title),
+		(int) $position
+	);
+}
+
+/**
+ * Helper: current breadcrumb (no link)
+ */
+function breadcrumb_current($title, $position) {
+	return sprintf(
+		'<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<span itemprop="name">%s</span>
+			<meta itemprop="position" content="%d">
+		</li>',
+		esc_html($title),
+		(int) $position
+	);
+}
+
 
 
 
