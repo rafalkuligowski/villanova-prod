@@ -309,6 +309,18 @@ function custom_breadcrumbs() {
 
 	// Single post
 	elseif (is_single() && !is_attachment()) {
+    	if ( is_singular( 'post' ) ) {
+            $blog_page_id = get_option( 'page_for_posts' );
+
+            if ( $blog_page_id ) {
+                echo breadcrumb_link(
+                    get_permalink( $blog_page_id ),
+                    get_the_title( $blog_page_id ),
+                    $position++
+                );
+            }
+        }
+
 		$post_type = get_post_type();
 		$post_type_object = get_post_type_object($post_type);
 
@@ -358,6 +370,18 @@ function custom_breadcrumbs() {
 			$position
 		);
 	}
+
+	//Author
+	elseif ( is_author() ) {
+
+        $author_id   = get_queried_object_id();
+        $author_name = get_the_author_meta( 'display_name', $author_id );
+
+        echo breadcrumb_current(
+            sprintf( '%s: %s', pll__( 'Autor' ), $author_name ),
+            $position
+        );
+    }
 
 	// Archive
 	elseif (is_archive()) {

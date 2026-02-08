@@ -83,6 +83,53 @@
                 </div>
         </div>
     </div>
+    <?php
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => 3,
+        'post__not_in'   => array( get_the_ID() ),
+    );
+    $the_query = new WP_Query( $args ); ?>
+    <?php if ( $the_query->have_posts() ) : ?>
+        <section id="posts">
+            <div class="container">
+                <?php
+                $news = get_field('aktualnosci');
+                ?>
+                <div class="page-title-bar">
+                    <h2 class="title"><?php echo pll__('Zobacz inne wpisy'); ?></h2>
+                    <?php
+                    if(pll_current_language() === 'pl'){
+                        $blogUrl = 'blog';
+                    }else{
+                        $blogUrl = 'blog';
+                    }
+                    ?>
+                    <a href="<?php echo home_url().'/'.$blogUrl; ?>">
+                        <button class="button outline primary"><?php echo pll__('Zobacz wszystkie'); ?></button>
+                    </a>
+                </div>
+                <div class="posts-wrapper">
+                    <?php $i = 0; ?>
+                    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+                        <a href="<?php echo get_permalink(); ?>" class="post">
+                            <div class="image" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');"></div>
+                            <div class="title"><?php the_title(); ?></div>
+                            <div class="excerpt">
+                                <?php echo wp_trim_words( get_the_excerpt(), 20, '…' ); ?>
+                            </div>
+                            <div class="date">
+                                Dodano dnia: <?php echo get_the_date(); ?>
+                            </div>
+                            <button class="button clear dark" style="margin: 15px 0;">Czytaj więcej</button>
+                        </a>
+                        <?php $i++; ?>
+                    <?php endwhile; ?>
+                </div>
+                <?php wp_reset_postdata(); ?>
+            </div>
+        </section>
+    <?php endif; ?>
 </div>
 
 <?php get_footer(); ?>

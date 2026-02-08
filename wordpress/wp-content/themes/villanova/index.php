@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 <div class="wrapper">
-    <div class="page-banner" style="background-image: url('https://villanova.imperit.pl/wp-content/uploads/2023/09/blog_bg.webp');">
+    <div class="page-banner" style="background-image: url('/wp-content/uploads/2023/09/blog_bg.webp');">
         <div class="mask"></div>
         <div class="container">
             <div class="info">
