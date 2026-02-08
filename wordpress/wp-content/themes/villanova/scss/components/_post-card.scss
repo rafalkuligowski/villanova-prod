@@ -58,17 +58,16 @@
   }
   @media all and (max-width: 1024px){
       .posts-wrapper{
-      .post{
-          width: calc(50% - 10px);
+        .post{
+            width: calc(50% - 10px);
+        }
       }
-      }
-
   }
   @media all and (max-width: 680px){
       .posts-wrapper{
       .post{
-      width: 100%;
-      }
+          width: 100%;
+        }
       }
   }
 }

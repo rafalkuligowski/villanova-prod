@@ -1,0 +1,28 @@
+.author-info{
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  .author-avatar{
+    margin-right: 15px;
+    img{
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+    }
+  }
+  .author-details{
+    .author-name{
+      margin: 5px 0;
+      font-size: 18px;
+      color: #1E1E1E;
+      font-weight: 500;
+    }
+    .author-bio{
+        margin: 5px 0;
+    }
+  }
+}

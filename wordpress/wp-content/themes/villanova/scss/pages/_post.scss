@@ -1,0 +1,49 @@
+.single-post {
+    .post-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        .lead {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                       "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 1.225rem;
+            line-height: 1.4;
+            color: #1e1e1e;
+        }
+    }
+    .post-banner {
+        margin-block: 40px;
+        .content {
+            width: 100%;
+            .title {
+                font-size: 25px;
+            }
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+        }
+    }
+    @media all and (max-width: 1024px){
+        .post-container {
+            .sidebar {
+                width: 200px;
+                flex-shrink: 0;
+            }
+        }
+    }
+    @media all and (max-width: 680px){
+        .post-container {
+            .sidebar {
+                display: none;
+            }
+            .post-banner {
+                margin-block: 20px;
+            }
+        }
+    }
+}
