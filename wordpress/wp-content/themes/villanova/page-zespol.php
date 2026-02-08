@@ -7,6 +7,7 @@
             <div class="info">
                 <h1 class="title"><?php the_title(); ?></h1>
                 <p class="description"><?php echo get_field('short-description'); ?></p>
+                <?php if (function_exists('custom_breadcrumbs')) custom_breadcrumbs(); ?>
             </div>
         </div>
     </div>

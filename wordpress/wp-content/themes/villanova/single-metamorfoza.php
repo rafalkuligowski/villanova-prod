@@ -5,6 +5,7 @@
         <div class="container">
             <div class="info">
                 <h1 class="title">Metamorfoza</h1>
+                <?php if (function_exists('custom_breadcrumbs')) custom_breadcrumbs(); ?>
             </div>
         </div>
     </div>
