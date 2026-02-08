@@ -5,6 +5,14 @@
         <div class="container">
             <div class="info">
                 <h1 class="title">Blog</h1>
+                <?php
+                $short_description = get_field('short_description', 26);
+
+                if ( !empty( $short_description ) ) : ?>
+                    <p class="banner-description"><?php echo esc_html( $short_description ); ?></p>
+                <?php endif; ?>
+
+                <?php if (function_exists('custom_breadcrumbs')) custom_breadcrumbs(); ?>
             </div>
         </div>
     </div>
