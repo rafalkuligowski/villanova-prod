@@ -914,60 +914,6 @@ a{
     }
   }
 }
-#posts{
-  padding: 40px 0;
-  .posts-wrapper{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    .post{
-      width: calc(50% - 10px);
-      height: 320px;
-      border-radius: 30px;
-      margin-bottom: 20px;
-      background-color: #F6FAFD;
-      background-size: 115% auto;
-      background-position: center;
-      position: relative;
-      display: block;
-      transition: .5s;
-      .filter{
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        box-shadow: inset 0 -120px 120px rgba(0,0,0,0.65);
-        z-index: 1;
-        border-radius: 30px;
-      }
-      .title-bar{
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 25px;
-        z-index: 5;
-        .title{
-          width: calc(100% - 140px);
-          font-size: 18px;
-          font-weight: 500;
-          color: #fff;
-        }
-      }
-      &:hover{
-        background-size: 125% auto;
-        .title{
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
 
 #about{
   margin: 40px 0;
@@ -1698,9 +1644,6 @@ footer{
   #clinic .gallery .aigpl-gallery .aigpl-img-wrp{
     height: 250px;
   }
-  #posts .posts-wrapper .post{
-    height: 275px;
-  }
 }
 
 @media all and (max-width: 1024px){
@@ -1767,17 +1710,6 @@ footer{
   }
   #clinic .gallery .aigpl-gallery .aigpl-img-wrp{
     height: 220px;
-  }
-  #posts .posts-wrapper .post{
-    height: 250px;
-    background-size: 135% auto;
-    .title-bar{
-      flex-wrap: wrap;
-      .title{
-        width: 100%;
-        font-size: 16px;
-      }
-    }
   }
   #star-banner{
     .banner {
@@ -1961,10 +1893,6 @@ footer{
 }
 
 @media all and (max-width: 680px){
-  #posts .posts-wrapper .post{
-    height: 250px;
-    width: 100%;
-  }
   .page-title-bar{
     flex-wrap: wrap;
     justify-content: center;
