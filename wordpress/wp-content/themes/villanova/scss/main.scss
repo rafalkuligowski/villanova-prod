@@ -1,5 +1,5 @@
-@use "./components";
 @use "./pages";
+@use "./components";
 
 *,
 *::before,
@@ -423,108 +423,6 @@ a{
   margin: 40px 0;
   font-size: 16px;
   text-align: center;
-}
-.services{
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 60px;
-}
-.service{
-  width: calc(25% - 20px);
-  border-radius: 30px;
-  background: #F5F2EF;
-  margin: 10px;
-  cursor: pointer;
-  padding-bottom: 40px;
-  position: relative;
-  transition: .5s;
-  cursor: pointer;
-  display: block;
-  .photo{
-    width: 100%;
-    height: 150px;
-    border-radius: 30px;
-    background-color: #F6FAFD;
-    background-size: 110% auto;
-    background-position: center;
-    position: relative;
-    transition: .5s;
-    opacity: 0.55;
-    .filter{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
-      background: rgba(221,216,212,.45);
-      border-radius: 30px;
-      display: none;
-    }
-    .before_after{
-      display: flex;
-      width: 100%;
-      height: 100%;
-      border-radius: 30px;
-      overflow: hidden;
-      .before{
-        width: 50%;
-        height: 100%;
-        background-size: cover;
-        background-position: left;
-        border-right: 1px solid #fff;
-      }
-      .after{
-        width: 50%;
-        height: 100%;
-        background-size: cover;
-        background-position: right;
-        border-left: 1px solid #fff;
-      }
-    }
-  }
-  .details{
-    padding: 15px;
-    .title{
-      font-size: 18px;
-      margin: 0;
-      font-weight: 500;
-      color: #1e1e1e;
-    }
-    .description{
-      font-size: 14px;
-      margin: 8px 0 0 0;
-      color: #777777;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3; /* number of lines to show */
-      line-clamp: 3;
-      -webkit-box-orient: vertical;
-      max-height: 54px;
-    }
-  }
-  .show-more{
-    font-size: 14px;
-    text-decoration: underline;
-    display: block;
-    position: absolute;
-    bottom: 25px;
-    left: 15px;
-    width: 100%;
-    color: #1A1919;
-    font-weight: 500;
-  }
-  &:hover{
-    background-color: #DDD8D4;
-    .photo{
-      background-size: 125% auto;
-      opacity: 1;
-    }
-    .details{
-      .title{
-        text-decoration: underline;
-      }
-    }
-  }
 }
 
 .team-wrapper{

@@ -27,7 +27,7 @@
                         <div class="content">
                             <h2 class="title">"Uśmiech to najpiękniejsze, co możemy podarować!"</h2>
                             <p class="subtitle">dr n. med. Emma Kiworkowa</p>
-                            <a class="button filled black" href="https://villanova.imperit.pl/kontakt/">
+                            <a class="button filled black" href="/kontakt">
                                 Kontakt
                             </a>
                         </div>
