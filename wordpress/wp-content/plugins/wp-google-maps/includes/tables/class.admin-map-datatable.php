@@ -12,7 +12,7 @@ class AdminMapDataTable extends DataTable
 		
 		DataTable::__construct($WPGMZA_TABLE_NAME_MAPS, $ajax_parameters, $datatable_options);
 		
-		@$this->element->setAttribute('data-wpgmza-admin-map-datatable', null);
+		@$this->element->setAttribute('data-wpgmza-admin-map-datatable', '');
 		
 		wp_enqueue_style('datatables', plugin_dir_url(WPGMZA_FILE) . 'css/data_table_front.css');
 		
@@ -98,7 +98,7 @@ class AdminMapDataTable extends DataTable
 						$columns[$key] = "REPLACE('
 						<div class=\"wpgmza-action-group\">
 							<button 
-								class=\"{$buttonClass}\"
+								class=\"{$buttonClass} wpgmza-button-primary\"
 								data-map-id=\"$placeholder\" 
 								data-action=\"edit\">
 								" . esc_sql( __('Edit', 'wp-google-maps') ) . "
@@ -120,7 +120,7 @@ class AdminMapDataTable extends DataTable
 					} else {
 						$columns[$key] = "REPLACE('
 						<button 
-							class=\"{$buttonClass}\"
+							class=\"{$buttonClass} wpgmza-button-primary\"
 							data-map-id=\"$placeholder\" 
 							data-action=\"edit\">
 							" . esc_sql( __('Edit', 'wp-google-maps') ) . "

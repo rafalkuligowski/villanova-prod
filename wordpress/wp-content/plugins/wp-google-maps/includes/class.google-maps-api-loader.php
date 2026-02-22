@@ -320,11 +320,9 @@ class GoogleMapsAPILoader
 			return false;
 		}
 		
-		if(!empty($settings['wpgmza_maps_engine']) && $settings['wpgmza_maps_engine'] == 'open-layers')
-		{
+		if(!empty($settings['wpgmza_maps_engine']) && $settings['wpgmza_maps_engine'] != 'google-maps') {
 			$status->message = 'Engine is not google-maps';
 			$status->code = GoogleMapsAPILoader::ENGINE_NOT_GOOGLE_MAPS;
-			
 			return false;
 		}
 		
@@ -351,7 +349,7 @@ class GoogleMapsAPILoader
 				 *  V9 Will move away from this switch, and instead use an array with a filter for devs to extend further as needed
 				*/
 				switch($post->post_type){
-					case 'wpsl_stores';
+					case 'wpsl_stores':
 						$status->message = 'Page is explicitly excluded in settings';
 						$status->code = GoogleMapsAPILoader::PAGE_EXPLICITLY_EXCLUDED;
 						return false;

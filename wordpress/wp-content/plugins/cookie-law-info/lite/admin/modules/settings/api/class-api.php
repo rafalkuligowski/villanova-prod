@@ -50,6 +50,47 @@ class Api extends Rest_Controller {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ), 10 );
 	}
 	/**
+	 * Helper method to register simple POST routes.
+	 *
+	 * @param string $endpoint The endpoint path.
+	 * @param string $callback The callback method name.
+	 * @return void
+	 */
+	private function register_post_route( $endpoint, $callback ) {
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/' . $endpoint,
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, $callback ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Helper method for simple controller method calls with JSON data and error handling.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @param string $method_name The controller method name to call.
+	 * @param bool $use_json_params Whether to use JSON params (default: true).
+	 * @return WP_Error|WP_REST_Response
+	 */
+	private function call_controller_method( $request, $method_name, $use_json_params = true ) {
+		$data = $use_json_params ? $request->get_json_params() : array();
+		$response = Controller::get_instance()->{$method_name}( $data );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		return rest_ensure_response( $response );
+	}
+
+	/**
 	 * Register the routes for cookies.
 	 *
 	 * @return void
@@ -167,6 +208,18 @@ class Api extends Rest_Controller {
 		);
 		register_rest_route(
 			$this->namespace,
+			'/' . $this->rest_base . '/connect_notice',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'update_connect_notice' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
 			'/' . $this->rest_base . '/reinstall',
 			array(
 				array(
@@ -177,6 +230,31 @@ class Api extends Rest_Controller {
 				),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/apply_filter',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'apply_filter' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/notices/pageviews_overage_notice',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'dismiss_pageviews_overage_notice' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+			)
+		);
+		$this->register_post_route( 'payments', 'add_payments' );
 	}
 	/**
 	 * Get a collection of items.
@@ -224,10 +302,10 @@ class Api extends Rest_Controller {
 			array(
 				'slug'        => 'ccpa',
 				'title'       => __( 'CCPA (California Consumer Privacy Act)', 'cookie-law-info' ),
-				'description' => __( 'Choose CCPA if most of your targeted audience are from California or US. This will create a customizable banner with a “Do Not Sell My Personal Information” link that allows your visitors to refuse the use of cookies.', 'cookie-law-info' ),
+				'description' => __( 'Choose CCPA if most of your targeted audience are from California or US. This will create a customizable banner with a "Do Not Sell My Personal Information" link that allows your visitors to refuse the use of cookies.', 'cookie-law-info' ),
 				'tooltip'     => __(
 					'Choose CCPA if most of your targeted audience are from California or US.
-					It creates a customizable banner with a “Do Not Sell My Personal Information” link that allows your visitors to refuse the use of cookies.',
+					It creates a customizable banner with a "Do Not Sell My Personal Information" link that allows your visitors to refuse the use of cookies.',
 					'cookie-law-info'
 				),
 			),
@@ -313,6 +391,45 @@ class Api extends Rest_Controller {
 	}
 
 	/**
+	 * Apply WordPress filter hook
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function apply_filter( $request ) {
+		$filter_name = $request->get_param( 'filter_name' );
+		$filter_data = $request->get_param( 'filter_data' );
+
+		if ( empty( $filter_name ) ) {
+			return new WP_Error( 'missing_filter_name', __( 'Filter name is required.', 'cookie-law-info' ), array( 'status' => 400 ) );
+		}
+
+		// Apply the WordPress filter
+		$result = apply_filters( $filter_name, $filter_data );
+
+		// If filter returns false, it means navigation should be prevented
+		$response_data = array(
+			'prevent_navigation' => ( $result === false ),
+			'filter_result' => $result,
+		);
+
+		return rest_ensure_response( $response_data );
+	}
+
+	/**
+	 * Dismiss the pageviews overage notice.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function dismiss_pageviews_overage_notice( $request ) {
+		$expiry = $request->get_param( 'expiry' );
+		$notice = Notice::get_instance();
+		$notice->dismiss( 'pageviews_overage_notice', $expiry );
+		return rest_ensure_response( array( 'success' => true ) );
+	}
+
+	/**
 	 * Update the status of admin notices.
 	 *
 	 * @param object $request Request.
@@ -340,6 +457,21 @@ class Api extends Rest_Controller {
 		$expand   = isset( $request['expand'] ) ? boolval( $request['expand'] ) : true;
 
 		Connect_Notice::get_instance()->save_state( $expand );
+		$response['status'] = true;
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Update the status of connect notice.
+	 *
+	 * @param object $request Request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+
+	public function update_connect_notice( $request ) {
+		$response = array( 'status' => false );
+		$connect_notice = isset( $request['connect_notice'] ) ? boolval( $request['connect_notice'] ) : true;
+		Connect_Notice::get_instance()->save_connect_notice( $connect_notice );
 		$response['status'] = true;
 		return rest_ensure_response( $response );
 	}
@@ -497,6 +629,16 @@ class Api extends Rest_Controller {
 		);
 
 		return $this->add_additional_fields_schema( $schema );
+	}
+
+	/**
+	 * Add payments/subscription.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function add_payments( $request ) {
+		return $this->call_controller_method( $request, 'add_payments' );
 	}
 
 } // End the class.

@@ -25,12 +25,23 @@ jQuery(function($) {
 			}
 		});
 
+		$(this.element).on('click', '.grouping .grouping-toggle-fullscreen', function(event){
+			$('.sidebar').toggleClass('as-fullscreen');
+		});
+
 		$('.quick-actions .actions').on('click', '.icon', function(event){
 			var feature = $(this).data('type');
 			if(feature){
 				self.openTabByFeatureType(feature);
 
 				$('.quick-actions #qa-add-datasets').prop('checked', false);
+			}
+		});
+
+		$('[data-quick-action-relay]').on('click', function(event){
+			let trigger = $(this).data('quick-action-relay');
+			if(trigger){
+				$('.quick-actions .icon[data-type="' + trigger + '"]').trigger('click');
 			}
 		});
 
@@ -136,6 +147,9 @@ jQuery(function($) {
 			if(element.data('feature')){
 				$(element).trigger('feature-block-opened');
 			}
+
+			/* Disable fullscreen view if it was already set to on */
+			$('.sidebar').removeClass('as-fullscreen');
 
 			/* Dispatch an event to let other tools know panels are being opened. Features use a different event (feature-block-opened) */
 			$(element).trigger('grouping-opened', [groupId]);

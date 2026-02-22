@@ -34,6 +34,9 @@ jQuery(function($) {
 				this.marker = pointlabel.marker;
 			}
 		}
+
+		this.on('mapchanged', this.updateNativeMap);
+		this.on('mapchanged', this.updateNativeFeature);
 	}
 	
 	WPGMZA.Pointlabel.prototype = Object.create(WPGMZA.Feature.prototype);
@@ -53,6 +56,10 @@ jQuery(function($) {
 				this.textFeature.remove();
 			}
 			this._map = a;
+
+			if(this.textFeature){
+				this.trigger("mapchanged");
+			}
 		}
 		
 	});
@@ -60,11 +67,24 @@ jQuery(function($) {
 	WPGMZA.Pointlabel.getConstructor = function(){
 		switch(WPGMZA.settings.engine){
 			case "open-layers":
+			case "open-layers-latest":
 				if(WPGMZA.isProVersion()){
 					return WPGMZA.OLProPointlabel;
 					break;
 				}
 				return WPGMZA.OLPointlabel;
+				break;
+			case "leaflet":
+			case "leaflet-azure":
+			case "leaflet-stadia":
+			case "leaflet-maptiler":
+			case "leaflet-locationiq":
+			case "leaflet-zerocost":
+				if(WPGMZA.isProVersion()){
+					return WPGMZA.LeafletProPointlabel;
+					break;
+				}
+				return WPGMZA.LeafletPointlabel;
 				break;
 			
 			default:
@@ -225,7 +245,12 @@ jQuery(function($) {
 		
 		if(map){
 			map.addPointlabel(this);
+		}		
+	}
+
+	WPGMZA.Pointlabel.prototype.updateNativeMap = function(){
+		if(this.textFeature){
+			this.textFeature.setMap(this.map ? this.map : null);
 		}
-			
 	}
 });

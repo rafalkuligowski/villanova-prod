@@ -72,6 +72,8 @@ class Cdn_Plugin {
 			add_filter( 'update_feedback', array( $this, 'update_feedback' ) );
 		}
 
+		add_action( 'send_headers', array( $this, 'send_headers' ) );
+
 		$default_override = Cdn_Util::get_flush_manually_default_override( $cdn_engine );
 		$flush_on_actions = ! $this->_config->get_boolean( 'cdn.flush_manually', $default_override );
 
@@ -101,6 +103,22 @@ class Cdn_Plugin {
 		}
 
 		add_filter( 'w3tc_minify_http2_preload_url', array( $this, 'w3tc_minify_http2_preload_url' ), 3000 );
+	}
+
+	/**
+	 * Send CDN Headers.
+	 *
+	 * @return void
+	 *
+	 * @since 2.9.1
+	 */
+	public function send_headers() {
+		$cdn_engine     = $this->_config->get_string( 'cdn.engine' );
+		$is_cdn_enabled = $this->_config->get_boolean( 'cdn.enabled' );
+
+		if ( $is_cdn_enabled && $cdn_engine ) {
+			@header( 'X-W3TC-CDN: ' . $cdn_engine );
+		}
 	}
 
 	/**
@@ -832,13 +850,19 @@ class Cdn_Plugin {
 	 */
 	public function w3tc_admin_bar_menu( $menu_items ) {
 		$cdn_engine = $this->_config->get_string( 'cdn.engine' );
+		$current_page = Util_Request::get_string( 'page', 'w3tc_dashboard' );
 
 		if ( Cdn_Util::can_purge_all( $cdn_engine ) ) {
 			$menu_items['20710.cdn'] = array(
 				'id'     => 'w3tc_cdn_flush_all',
 				'parent' => 'w3tc_flush',
 				'title'  => __( 'CDN Cache', 'w3-total-cache' ),
-				'href'   => wp_nonce_url( admin_url( 'admin.php?page=w3tc_cdn&amp;w3tc_flush_cdn' ), 'w3tc' ),
+				'href'   => wp_nonce_url(
+					admin_url(
+						'admin.php?page=' . $current_page . '&amp;w3tc_flush_cdn'
+					),
+					'w3tc'
+				),
 			);
 		}
 
@@ -847,7 +871,12 @@ class Cdn_Plugin {
 				'id'     => 'w3tc_cdn_flush',
 				'parent' => 'w3tc_flush',
 				'title'  => __( 'CDN: Manual Purge', 'w3-total-cache' ),
-				'href'   => wp_nonce_url( admin_url( 'admin.php?page=w3tc_cdn&amp;w3tc_cdn_purge' ), 'w3tc' ),
+				'href'   => wp_nonce_url(
+					admin_url(
+						'admin.php?page=' . $current_page . '&amp;w3tc_cdn_purge'
+					),
+					'w3tc'
+				),
 				'meta'   => array( 'onclick' => 'w3tc_popupadmin_bar(this.href); return false' ),
 			);
 		}

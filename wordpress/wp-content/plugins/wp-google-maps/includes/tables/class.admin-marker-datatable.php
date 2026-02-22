@@ -22,11 +22,11 @@ class AdminMarkerDataTable extends MarkerDataTable
 
 		$buttonClass = $wpgmza->internalEngine->getButtonClass('button');
 
-		@$this->element->setAttribute('data-wpgmza-admin-marker-datatable', null);
+		@$this->element->setAttribute('data-wpgmza-admin-marker-datatable', '');
 		
 		$this->element->import('<div class="wpgmza-marker-listing__actions">
 			<span>&#x21b3;</span>
-			<button class="wpgmza ' . $buttonClass . ' select_all_markers" type="button">' . __('Select All', 'wp-google-maps') . '</button>
+			<button class="wpgmza ' . $buttonClass . ' select_all_markers select_all_features" type="button">' . __('Select All', 'wp-google-maps') . '</button>
 			<button class="wpgmza ' . $buttonClass . ' bulk_edit" type="button">' . __('Bulk Edit', 'wp-google-maps') . '</button>
 			<button class="wpgmza ' . $buttonClass . ' bulk_delete" type="button">' . __('Bulk Delete', 'wp-google-maps') . '</button>
 		</div>');

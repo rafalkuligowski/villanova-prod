@@ -116,7 +116,7 @@ class Util_Environment {
 			if ( is_array( $value ) ) {
 				if ( count( $value ) ) {
 					$str .= ( ! empty( $str ) ? '&' : '' ) .
-						self::url_query( $value, $skip_empty, $key );
+						self::url_query( $value, $skip_empty, $separator );
 				}
 			} else {
 				$name = '';
@@ -364,6 +364,36 @@ class Util_Environment {
 	 */
 	public static function is_litespeed() {
 		return isset( $_SERVER['SERVER_SOFTWARE'] ) && stristr( htmlspecialchars( stripslashes( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false; // phpcs:ignore
+	}
+
+	/**
+	 * Check whether Elementor is enabled.
+	 *
+	 * @since 2.8.11
+	 *
+	 * @static
+	 *
+	 * @return bool
+	 */
+	public static function is_elementor() {
+		// If WordPress functions are available, use the standard plugin check.
+		if ( function_exists( 'get_option' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+			if ( is_plugin_active( 'Elementor\Plugin' ) || is_plugin_active( 'elementor/elementor.php' ) ) {
+				return true;
+			}
+		}
+
+		/**
+		 * Fallback: Check if Elementor class is loaded (works during early page cache processing).
+		 * If Elementor is active, WordPress would have loaded its main class.
+		 */
+		if ( class_exists( '\Elementor\Plugin' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

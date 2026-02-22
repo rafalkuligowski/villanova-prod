@@ -1363,7 +1363,7 @@ function ewww_image_optimizer_should_resize( $file, $media = false ) {
 		$maxwidth  = ewww_image_optimizer_get_option( 'ewww_image_optimizer_maxmediawidth' );
 		$maxheight = ewww_image_optimizer_get_option( 'ewww_image_optimizer_maxmediaheight' );
 	}
-	list( $oldwidth, $oldheight ) = wp_getimagesize( $file );
+	list( $oldwidth, $oldheight ) = ewwwio()->getimagesize( $file );
 	if ( ( $maxwidth && $oldwidth > $maxwidth ) || ( $maxheight && $oldheight > $maxheight ) ) {
 		$already_optimized = false;
 		if ( empty( $optimized_list ) || ! is_array( $optimized_list ) ) {
@@ -1559,7 +1559,7 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 			ewwwio_debug_message( "id: $selected_id and type: $mime" );
 			$attached_file = ( ! empty( $attachments_meta[ $selected_id ]['_wp_attached_file'] ) ? $attachments_meta[ $selected_id ]['_wp_attached_file'] : '' );
 
-			list( $file_path, $upload_path ) = ewww_image_optimizer_attachment_path( $meta, $selected_id, $attached_file, false );
+			$file_path = ewww_image_optimizer_attachment_path( $meta, $selected_id, $attached_file, false );
 
 			if ( ! empty( $file_path ) && false !== strpos( $file_path, 'https://images-na.ssl-images-amazon.com' ) ) {
 				ewwwio_debug_message( "Cannot compress externally-hosted Amazon image $selected_id" );
@@ -1577,7 +1577,8 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 					class_exists( 'WindowsAzureStorageUtil' ) ||
 					class_exists( 'Amazon_S3_And_CloudFront' ) ||
 					ewww_image_optimizer_s3_uploads_enabled() ||
-					class_exists( 'wpCloud\StatelessMedia\EWWW' )
+					class_exists( 'wpCloud\StatelessMedia\EWWW' ) ||
+					apply_filters( 'ewww_image_optimizer_is_remote_file', false, $file_path, $selected_id )
 				)
 			) {
 				// Construct a $file_path and proceed IF a supported CDN plugin is installed.
@@ -1723,7 +1724,7 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 					} else {
 						$retina_path = false;
 					}
-					if ( $retina_path && ewwwio_is_file( $retina_path ) ) {
+					if ( $retina_path && ( $remote_file || ewwwio_is_file( $retina_path ) ) ) {
 						ewwwio_debug_message( "found retina via wr2x_get_retina $retina_path" );
 						$attachment_images[ $size . '-retina' ] = $retina_path;
 					} else {
@@ -1762,7 +1763,7 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 					if ( ewwwio()->webp_only && ! in_array( $thumb_mime, $webp_types, true ) ) {
 						continue;
 					}
-					if ( ewwwio_is_file( $imagemeta_resize_path ) ) {
+					if ( $remote_file || ewwwio_is_file( $imagemeta_resize_path ) ) {
 						$attachment_images[ 'resized-images-' . $index ] = $imagemeta_resize_path;
 					}
 				}
@@ -1778,7 +1779,7 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 					if ( ewwwio()->webp_only && ! in_array( $thumb_mime, $webp_types, true ) ) {
 						continue;
 					}
-					if ( ewwwio_is_file( $custom_size_path ) ) {
+					if ( $remote_file || ewwwio_is_file( $custom_size_path ) ) {
 						$attachment_images[ 'custom-size-' . $dimensions ] = $custom_size_path;
 					}
 				}
@@ -1894,13 +1895,7 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 							continue;
 						}
 					}
-					if ( seems_utf8( $file_path ) ) {
-						ewwwio_debug_message( 'file seems utf8' );
-						$utf8_file_path = $file_path;
-					} else {
-						ewwwio_debug_message( 'file will become utf8' );
-						$utf8_file_path = mb_convert_encoding( $file_path, 'UTF-8' );
-					}
+					$utf8_file_path = ewwwio()->ensure_utf8_path( $file_path );
 					ewww_image_optimizer_debug_log();
 					$images[ $file_path ] = array(
 						'path'          => ewww_image_optimizer_relativize_path( $utf8_file_path ),

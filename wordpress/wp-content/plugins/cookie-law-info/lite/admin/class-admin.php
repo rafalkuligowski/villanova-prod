@@ -44,6 +44,15 @@ class Admin {
 	private $version;
 
 	/**
+	 * The suffix of the script.
+	 *
+	 * @since    3.0.0
+	 * @access   private
+	 * @var      string    $suffix    The suffix of the script.
+	 */
+	private $suffix;
+
+	/**
 	 * Admin modules of the plugin
 	 *
 	 * @var array
@@ -74,6 +83,7 @@ class Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->suffix      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		self::$modules     = $this->get_default_modules();
 		$this->load();
 		$this->add_notices();
@@ -81,6 +91,7 @@ class Admin {
 		$this->load_modules();
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'load_plugin' ) );
+		add_action( 'activated_plugin', array( $this, 'handle_activation_redirect' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_classes' ) );
 		// Hide the unrelated admin notices.
 		add_action( 'admin_print_scripts', array( $this, 'hide_admin_notices' ) );
@@ -111,6 +122,7 @@ class Admin {
 				'type'        => 'info',
 			)
 		);
+		$notice->add( 'pageviews_overage_notice' );
 	}
 
 	/**
@@ -118,8 +130,8 @@ class Admin {
 	 *
 	 * @return void
 	 */
-	public function add_review_notice() {
-		$expiry    = 30 * DAY_IN_SECONDS;
+	public function add_review_notice() {		
+		$expiry    = 60 * DAY_IN_SECONDS;
 		$settings  = new \CookieYes\Lite\Admin\Modules\Settings\Includes\Settings();
 		$installed = $settings->get_installed_date();
 		if ( $installed && ( $installed + $expiry > time() ) ) {
@@ -133,6 +145,7 @@ class Admin {
 			)
 		);
 	}
+
 	/**
 	 * Get the default modules array
 	 *
@@ -154,6 +167,8 @@ class Admin {
 			'review_feedback',
 			'upgrade',
 			'pageviews',
+			'dashboard_widget',
+			'connect_banner',
 		);
 		return $modules;
 	}
@@ -165,6 +180,7 @@ class Admin {
 	 */
 	public function get_active_modules() {
 	}
+
 	/**
 	 * Load all the modules
 	 *
@@ -196,7 +212,7 @@ class Admin {
 		if ( false === cky_is_admin_page() ) {
 			return;
 		}
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/css/app.css', array(), $this->version );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/css/app' . $this->suffix . '.css', array(), $this->version );
 	}
 
 	/**
@@ -228,6 +244,7 @@ class Admin {
 			}
 		}
 	}
+
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
@@ -248,7 +265,7 @@ class Admin {
 			}
 		}
 		$notice = Notice::get_instance();
-		$expand = Connect_Notice::get_instance();
+		$connect_notice = Connect_Notice::get_instance();
 
 		$global_script  = $this->plugin_name . '-app';
 		$admin_url      = cky_parse_url( admin_url( 'admin.php' ) );
@@ -258,8 +275,8 @@ class Admin {
 			wp_enqueue_editor();
 		}
 
-		wp_enqueue_script( $this->plugin_name . '-vendors', plugin_dir_url( __FILE__ ) . 'dist/js/chunk-vendors.js', array(), $this->version, true );
-		wp_enqueue_script( $this->plugin_name . '-app', plugin_dir_url( __FILE__ ) . 'dist/js/app.js', array(), $this->version, true );
+		wp_enqueue_script( $this->plugin_name . '-vendors', plugin_dir_url( __FILE__ ) . 'dist/js/chunk-vendors' . $this->suffix . '.js', array(), $this->version, true );
+		wp_enqueue_script( $this->plugin_name . '-app', plugin_dir_url( __FILE__ ) . 'dist/js/app' . $this->suffix . '.js', array(), $this->version, true );
 
 		wp_localize_script(
 			$global_script,
@@ -273,6 +290,7 @@ class Admin {
 						'signUpUrl'  => CKY_APP_URL . '/signup',
 						'pricingUrl' => CKY_APP_URL . '/plans-list',
 						'checkoutUrl'=> CKY_APP_URL . '/trial',
+						'planSelectionUrl' => CKY_APP_URL . '/wp-plan-selector',
 					),
 					'path'         => array(
 						'base'  => plugin_dir_path( __FILE__ ),
@@ -355,7 +373,12 @@ class Admin {
 		wp_localize_script(
 			$global_script,
 			'ckyNoticeExpand',
-			$expand->get()
+			$connect_notice->get_accordion_status()
+		);
+		wp_localize_script(
+			$global_script,
+			'ckyConnectNotice',
+			$connect_notice->get_connect_notice_state()
 		);
 
 	}
@@ -386,6 +409,7 @@ class Admin {
 		);
 		return $data;
 	}
+
 	/**
 	 * Register main menu and sub menus
 	 *
@@ -449,6 +473,7 @@ class Admin {
 		}
 		return $menus;
 	}
+
 	/**
 	 * Main menu template
 	 *
@@ -480,30 +505,111 @@ class Admin {
 	 * @return array          The information of the locale.
 	 */
 	public function get_jed_locale_data( $domain ) {
-		$translations = get_translations_for_domain( $domain );
-		$locale       = array(
+		$locale = array(
 			'' => array(
 				'domain' => $domain,
 				'lang'   => is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale(),
 			),
 		);
 
-		if ( ! empty( $translations->headers['Plural-Forms'] ) ) {
-			$locale['']['plural_forms'] = $translations->headers['Plural-Forms'];
+		// Load translations from JSON files instead of PHP domain
+		$json_translations = $this->load_json_translations();
+		
+		// Convert flat translations to JED format
+		// JED format expects: key => [translation] for singular strings
+		foreach ( $json_translations as $key => $value ) {
+			$locale[ $key ] = array( $value );
 		}
-
-		foreach ( $translations->entries as $msgid => $entry ) {
-			$locale[ $msgid ] = $entry->translations;
-		}
-
-		// If any of the translated strings incorrectly contains HTML line breaks, we need to return or else the admin is no longer accessible.
+		// Check for HTML line breaks in translations and clean them if found
 		$json = wp_json_encode( $locale );
 		if ( preg_match( '/<br[\s\/\\\\]*>/', $json ) ) {
-			return array();
+			// Clean HTML line breaks from translations instead of returning empty array
+			foreach ( $locale as $key => $value ) {
+				if ( is_string( $value ) ) {
+					$locale[ $key ] = str_replace( array( '<br>', '<br/>', '<br />' ), '', $value );
+				} elseif ( is_array( $value ) ) {
+					foreach ( $value as $sub_key => $sub_value ) {
+						if ( is_string( $sub_value ) ) {
+							$locale[ $key ][ $sub_key ] = str_replace( array( '<br>', '<br/>', '<br />' ), '', $sub_value );
+						}
+					}
+				}
+			}
 		}
 
 		return $locale;
 	}
+
+	/**
+	 * Load translations from JSON files.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array The merged translations from all JSON files.
+	 */
+	private function load_json_translations() {
+		$translations = array();
+		
+		// Get current language code
+		$current_lang = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$lang_code = substr( $current_lang, 0, 2 ); // Get first 2 characters (e.g., 'en' from 'en_US')
+		
+		// Get WordPress languages directory path
+		$languages_dir = WP_CONTENT_DIR . '/languages/';
+		
+		// Define JSON file paths for JavaScript translations
+		$json_paths = array();
+		
+		// Look for JavaScript translation files with the pattern: cookie-law-info-{locale}-{hash}.json
+		$plugins_dir = $languages_dir . 'plugins/';
+		
+		if ( is_dir( $plugins_dir ) ) {
+			$files = glob( $plugins_dir . 'cookie-law-info-' . $current_lang . '-*.json' );
+			if ( ! empty( $files ) ) {
+				$json_paths = array_merge( $json_paths, $files );
+			}
+			
+			// Fallback to language code without country
+			$files = glob( $plugins_dir . 'cookie-law-info-' . $lang_code . '-*.json' );
+			if ( ! empty( $files ) ) {
+				$json_paths = array_merge( $json_paths, $files );
+			}
+			
+			// Fallback to English
+			$files = glob( $plugins_dir . 'cookie-law-info-en-*.json' );
+			if ( ! empty( $files ) ) {
+				$json_paths = array_merge( $json_paths, $files );
+			}
+		}
+		
+		// Load and merge translations from JSON files
+		foreach ( $json_paths as $path ) {
+			if ( file_exists( $path ) ) {
+				$json_content = file_get_contents( $path );
+				$json_data = json_decode( $json_content, true );
+				
+				if ( $json_data && is_array( $json_data ) ) {
+					// Extract translations from the nested structure
+					if ( isset( $json_data['locale_data']['messages'] ) ) {
+						$message_translations = $json_data['locale_data']['messages'];
+						
+						// Convert the nested structure to flat key-value pairs
+						foreach ( $message_translations as $key => $value ) {
+							if ( is_array( $value ) && isset( $value[0] ) ) {
+								// Skip the metadata entry (empty key)
+								if ( $key !== '' ) {
+									$translations[ $key ] = $value[0];
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return $translations;
+	}
+
 
 	/**
 	 * Hide all the unrelated notices from plugin page.
@@ -549,6 +655,25 @@ class Admin {
 	}
 
 	/**
+	 * Handle redirect after plugin activation.
+	 *
+	 * @param string $plugin Plugin basename.
+	 * @return void
+	 */
+	public function handle_activation_redirect( $plugin ) {
+		if ( CLI_PLUGIN_BASENAME !== $plugin ) {
+			return;
+		}
+		// Prevent redirect during AJAX, network admin, or if user doesn't have permission.
+		if ( wp_doing_ajax() || is_network_admin() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		// Redirect to dashboard.
+		wp_safe_redirect( admin_url( 'admin.php?page=cookie-law-info' ) );
+		exit;
+	}
+
+	/**
 	 * Load plugin for the first time.
 	 *
 	 * @return void
@@ -559,6 +684,7 @@ class Admin {
 			delete_option( 'cky_first_time_activated_plugin' );
 		}
 	}
+
 	/**
 	 * Redirect the plugin to dashboard.
 	 *

@@ -325,7 +325,7 @@ ul.wt-gdprpro-features {
 			<li>
 				<b><?php echo esc_html( __( 'Access additional free and premium features by connecting to CookieYes web app (Optional)', 'cookie-law-info' ) ); ?></b>                						  
 				<?php echo esc_html(
-					__( '— Cookie scan, Consent log, Support for Google Consent Mode v2, IAB TCF v2.2 banner, Google’s Additional Consent Mode, etc.', 'cookie-law-info' )
+					__( '— Cookie scan, Consent log, Support for Google Consent Mode v2, IAB TCF v2.3 banner, Google’s Additional Consent Mode, etc.', 'cookie-law-info' )
 				); ?>
 			</li>
 		</ul>
@@ -352,7 +352,7 @@ ul.wt-gdprpro-features {
 			<li>
 				<?php
 				echo wp_kses(
-					__( '<strong>After migrating, you can add custom CSS to:</strong>', 'cookie-law-info' ),
+					__( '<strong>After migrating, you can add custom CSS to:</strong>', 'cookie-law-info' ), // phpcs:ignore WordPress.WP.I18n.NoHtmlWrappedStrings
 					array(
 						'p'      => array(),
 						'strong' => array(),
@@ -374,7 +374,7 @@ ul.wt-gdprpro-features {
 			<li>
 				<?php
 				echo wp_kses(
-					__( '<strong>The following customization features will no longer be available:</strong>', 'cookie-law-info' ),
+					__( '<strong>The following customization features will no longer be available:</strong>', 'cookie-law-info' ), // phpcs:ignore WordPress.WP.I18n.NoHtmlWrappedStrings
 					array(
 						'p'      => array(),
 						'strong' => array(),
@@ -397,6 +397,9 @@ ul.wt-gdprpro-features {
 				</li>
 				<li>
 					<?php echo esc_html( __( 'Accepting cookie consent on the page scroll or delay action on the cookie banner.', 'cookie-law-info' ) ); ?>
+				</li>
+				<li>
+					<?php echo esc_html( __( 'Disabling the accept button.', 'cookie-law-info' ) ); ?>
 				</li>
 			</ul>
 			<li>

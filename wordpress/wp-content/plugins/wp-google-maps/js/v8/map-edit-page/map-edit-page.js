@@ -26,6 +26,7 @@ jQuery(function($) {
 		
 		this.themePanel = new WPGMZA.ThemePanel();
 		this.themeEditor = new WPGMZA.ThemeEditor();
+		this.tilesetPanel = new WPGMZA.TilesetPanel();
 
 		this.sidebarGroupings = new WPGMZA.SidebarGroupings();
 
@@ -99,6 +100,20 @@ jQuery(function($) {
 			
 		});
 
+		$(document).on('heartbeat-tick', (event, response, status, jqXHR) => {
+			try{
+				if(response && response.nonces_expired){
+					if(response.wpgmza_nonce){
+						/* The hearbeat sent back a new nonce which should replace the map editor nonce */
+						$('form[name="wpgmza_map_form"] input[name="nonce"]').val(response.wpgmza_nonce).trigger('change');
+					}
+				}
+			} catch (ex){
+				/* Ignore, we can't handle this data */
+			}
+			
+		});
+
 		var ajaxRequest = false;
 		var wpgmzaAjaxTimeout = false;
 
@@ -143,7 +158,7 @@ jQuery(function($) {
 	        $temp.val(jQuery(this).val()).select();
 	        document.execCommand("copy");
 	        $temp.remove();
-	        WPGMZA.notification("Shortcode Copied");
+	        WPGMZA.notification("Shortcode Copied", false, '.action-bar', 'top-left');
 	    });
 		
 		this.on("markerupdated", function(event) {
@@ -210,9 +225,64 @@ jQuery(function($) {
 		        temp.val(shortcode).select();
 		        document.execCommand("copy");
 		        temp.remove();
-		        WPGMZA.notification("Shortcode Copied");
+		        WPGMZA.notification("Shortcode Copied", false, '.grouping.open[data-group="map-settings-shortcodes"]', 'top-right');
+				
 			}
 		});
+
+		/* One time hints */
+		$(document.body).find('.wpgmza-one-time-hint').each((index, hint) => {
+			const delay = $(hint).data('hint-delay');
+			if(delay){
+				setTimeout(() => {
+					$(hint).addClass('show-hint');
+
+					setTimeout(() => {
+						$(hint).remove();
+					}, parseInt(delay) * 1000);
+				}, parseInt(delay) * 1000);
+			}
+		});
+
+		/* Map Engine Toolbar */
+		if($(document.body).find('.wpgmza-engine-switch-toolbar').length > 0){
+			$(document.body).find('.wpgmza-engine-switch-toolbar .wpgmza-button[data-engine-switch-control]').on('click', function(event){
+				const engineSwitchControl = $(this).attr('data-engine-switch-control');
+				if(engineSwitchControl === 'apply'){
+					/* Apply the new engine, via Ajax and then save this map to show it */
+					$.ajax(WPGMZA.ajaxurl, {
+						method: "POST",
+						data : {
+							action : 'wpgmza_persisten_notice_quick_action',
+							relay : 'swap_map_engine_from_toolbar',
+							map_engine : $(document.body).find('.wpgmza-engine-switch-toolbar select').val(),
+							wpgmza_security : WPGMZA.ajaxnonce
+						},
+						success : function(response){
+							/* Save the map for good measure */
+							$('input[name="wpgmza_savemap"]').click();
+						},
+						error: function(){}
+					});
+				} else if(engineSwitchControl === 'dismiss'){
+					/* Dismiss this toolbar - It will never show again */
+					$(document.body).find('.wpgmza-engine-switch-toolbar').hide();
+					
+					$.ajax(WPGMZA.ajaxurl, {
+						method: "POST",
+						data : {
+							action : 'wpgmza_persisten_notice_quick_action',
+							relay : 'swap_map_engine_from_toolbar_dismiss',
+							wpgmza_security : WPGMZA.ajaxnonce
+						},
+						success : function(response){
+							
+						},
+						error: function(){}
+					});
+				}
+			});
+		}
 
 		this.initZoomSliderPreviews();
 	}
@@ -277,11 +347,16 @@ jQuery(function($) {
 		$("#slider-range-max").slider({
 			range: "max",
 			min: 1,
-			max: 21,
+			max: 22,
 			value: $("input[name='map_start_zoom']").val(),
 			slide: function( event, ui ) {
 				$("input[name='map_start_zoom']").val(ui.value);
 				self.map.setZoom(ui.value);
+
+				$("input[name='map_start_zoom']").parent().find('[data-zoom-hint]').text(`${ui.value}`);
+			},
+			create: function(event, ui) {
+				$("input[name='map_start_zoom']").parent().find('[data-zoom-hint]').text($("input[name='map_start_zoom']").val());
 			}
 		});
 		
@@ -300,12 +375,28 @@ jQuery(function($) {
 		$("#zoom-level-mobile-override-slider").slider({
 			range: "max",
 			min: 1,
-			max: 21,
+			max: 22,
 			value: $("input[name='zoom_level_mobile_override']").val(),
 			slide: function( event, ui ) {
 				$("input[name='zoom_level_mobile_override']").val(ui.value);
+
+				$("input[name='zoom_level_mobile_override']").parent().find('[data-zoom-hint]').text(`${ui.value}`);
+			},
+			create: function(event, ui) {
+				$("input[name='zoom_level_mobile_override']").parent().find('[data-zoom-hint]').text($("input[name='zoom_level_mobile_override']").val());
 			}
 		});
+
+		/* Mobile override dimensions */
+		$('#map_dimensions_mobile_override_enabled').on('change', function(){
+	        if($(this).prop('checked')){
+	            $('.wpgmza-map-mobile-dimension-override').fadeIn();
+	        }else{
+	            $('.wpgmza-map-mobile-dimension-override').fadeOut();
+	        }
+	    });
+
+		$('#map_dimensions_mobile_override_enabled').trigger('change');
 	}
 	
 	WPGMZA.MapEditPage.prototype.onShiftClick = function(event)
@@ -336,8 +427,12 @@ jQuery(function($) {
 	
 	WPGMZA.MapEditPage.prototype.onMapTypeChanged = function(event)
 	{
-		if(WPGMZA.settings.engine == "open-layers")
+		if(WPGMZA.settings.engine != "google-maps"){
+			if(this.map.setMapType){
+				this.map.setMapType($(event.target).find('option[value="' + event.target.value + '"]').data('map-type'));
+			}
 			return;
+		}
 		
 		var mapTypeId;
 		
@@ -387,14 +482,12 @@ jQuery(function($) {
 		$("#wpgmaps_save_reminder").show();
 	}
 	
-	WPGMZA.MapEditPage.prototype.onMapHeightTypeChange = function(event)
-	{
+	WPGMZA.MapEditPage.prototype.onMapHeightTypeChange = function(event) {
 		if(event.target.value == "%")
 			$("#wpgmza_height_warning").show();
 	}
 	
-	WPGMZA.MapEditPage.prototype.onRightClick = function(event)
-	{
+	WPGMZA.MapEditPage.prototype.onRightClick = function(event) {
 		var self = this;
 		var marker;
 
@@ -419,7 +512,7 @@ jQuery(function($) {
 		if(!this.rightClickMarker)
 		{
 			this.rightClickMarker = WPGMZA.Marker.createInstance({
-				draggable: true
+				draggable: true,
 			});
 		
 			this.rightClickMarker.on("dragend", function(event) {
@@ -566,7 +659,7 @@ jQuery(function($) {
 
 	WPGMZA.MapEditPage.prototype.onKeyUpEnhancedAutocomplete = function(event, element){
 		/* This should really be moved to its own module later (EnhancedAutocomplete) */
-		if(element._wpgmzaAddressInput && element._wpgmzaAddressInput.googleAutocompleteLoaded){
+		if(element._wpgmzaAddressInput && element._wpgmzaAddressInput.wpgmzaAutocomplete && element._wpgmzaAddressInput.wpgmzaAutocomplete.isReady()){
 			/* At some point the system swapped over to the Google Autocomplete, we should not take further action here */
 			return;
 		}
@@ -734,15 +827,18 @@ jQuery(function($) {
 								if(results.error){
 									/* We have an error, we need to work with this */
 									if (results.error == 'error1') {
-										$('#wpgmza_autoc_disabled').html(WPGMZA.localized_strings.cloud_api_key_error_1);
-										$('#wpgmza_autoc_disabled').fadeIn('slow');
+										this.swapEnhancedAutocomplete(element);
+										if(!element._wpgmzaAddressInput || !element._wpgmzaAddressInput.wpgmzaAutocomplete.isReady()){
+											$('#wpgmza_autoc_disabled').html(WPGMZA.localized_strings.cloud_api_key_error_1);
+											$('#wpgmza_autoc_disabled').fadeIn('slow');
+											
+										} 
+										
 										$('#wpgmza_autocomplete_search_results').hide();
-
 										enhancedAutocomplete.disabledFlag = true;
 									} else {
 										/* General request error was reached, we need to report it and instantly swap back to Google */
-										// console.error(results.error);
-										console.log("Enhanced Autocomplete Error: " + results.error + " (Switching to internal)");
+										console.warn("Enhanced Autocomplete Error: " + results.error + " (Switching to internal)");
 										this.swapEnhancedAutocomplete(element);
 									}
 								} else {
@@ -798,11 +894,11 @@ jQuery(function($) {
 	WPGMZA.MapEditPage.prototype.swapEnhancedAutocomplete = function(element){
 		/* Disable the enhanced autocomplete, and swap back to the native systems instead */
 		if(element._wpgmzaAddressInput){
-			if(!element._wpgmzaAddressInput.googleAutocompleteLoaded){
-				element._wpgmzaAddressInput.loadGoogleAutocomplete();
+			if(!element._wpgmzaAddressInput.wpgmzaAutocomplete.isReady()){
+				element._wpgmzaAddressInput.wpgmzaAutocomplete.autoload();
 
-				if(element._wpgmzaAddressInput.autocomplete){
-					element._wpgmzaAddressInput.findLocations();
+				if(element._wpgmzaAddressInput.wpgmzaAutocomplete){
+					element._wpgmzaAddressInput.wpgmzaAutocomplete.find();
 				}
 			}
 		}

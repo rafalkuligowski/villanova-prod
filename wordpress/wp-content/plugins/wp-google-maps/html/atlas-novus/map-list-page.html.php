@@ -31,7 +31,7 @@
 			<?php
 			echo sprintf( __( '<h3>We need your love!</h3><p>If you are enjoying our plugin, please consider <a href="%1$s" target="_blank" class="button-border button-border__green">reviewing WP Go Maps</a>. It would mean the world to us! If you are experiencing issues with the plugin, please <a href="%2$s" target="_blank"  class="button-border button-border__green">contact us</a> and we will help you as soon as humanly possible!</p>', 'wp-google-maps' ),
 				'https://wordpress.org/support/view/plugin-reviews/wp-google-maps?filter=5',
-				'http://www.wpgmaps.com/contact-us/'
+				'http://www.wpgmaps.com/contact-us/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=maplist-contactus-atlas-novus-v10'
 			);
 			?>
 			
@@ -44,31 +44,38 @@
 			</p>
 		</div>
 		
-		<p class='wpgmza_upgrade_nag'>
-			<a href="https://www.wpgmaps.com/purchase-professional-version/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mappage_1-atlas-novus<?php echo wpgmzaGetUpsellLinkParams() ?>" 	
-				target="_BLANK" 
-				title="<?php esc_html_e("Pro Version", "wp-google-maps"); ?>">
-				<?php
-				esc_html_e("Create unlimited maps", "wp-google-maps"); 
-				?></a>
-			
-			<?php
-			esc_html_e("with the", "wp-google-maps");
-			?>
-			
-			<a href="https://www.wpgmaps.com/purchase-professional-version/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mappage_2-atlas-novus<?php echo wpgmzaGetUpsellLinkParams() ?>"
-				title="Pro Version"
-				target="_BLANK">
-				<?php
-				esc_html_e("Pro Version", "wp-google-maps");
-				?></a>
+		<p class='wpgmza_upgrade_nag wpgmza-upgrade-nag-notice'>
+			<span class="dashicons dashicons-admin-site-alt3"></span>
+			<span>
+				<a href="https://www.wpgmaps.com/purchase-professional-version/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mappage_1-atlas-novus-v10<?php echo wpgmzaGetUpsellLinkParams() ?>" 	
+					target="_BLANK" 
+					title="<?php esc_html_e("Pro Version", "wp-google-maps"); ?>">
+					<?php
+					esc_html_e("Create unlimited maps", "wp-google-maps"); 
+					?></a>
 				
-			<?php
-			esc_html_e("of WP Go Maps", "wp-google-maps");
-			?>
+				<?php
+				esc_html_e("with the", "wp-google-maps");
+				?>
+				
+				<a href="https://www.wpgmaps.com/purchase-professional-version/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mappage_2-atlas-novus-v10<?php echo wpgmzaGetUpsellLinkParams() ?>"
+					title="Pro Version"
+					target="_BLANK">
+					<?php
+					esc_html_e("Pro Version", "wp-google-maps");
+					?></a>
+					
+				<?php
+				esc_html_e("of WP Go Maps", "wp-google-maps");
+				?>
+			</span>
+			<a target="_BLANK" class="wpgmza-button wpgmza-button-call-to-action"
+				href="<?php esc_attr_e(\WPGMZA\Plugin::getProLink("https://www.wpgmaps.com/purchase-professional-version/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mappage-cta-btn-atlas-novus-v10" . wpgmzaGetUpsellLinkParams()));  ?>">
+				<?php _e('Unlock Unlimited Maps', 'wp-google-maps'); ?> 
+			</a>
 		</p>
 		
-		<div id="wpgmza-admin-map-table-container" class="wpgmza-card wpgmza-shadow-high wpgmza-datatable-container wpgmza-pad-y-20"></div>
+		<div id="wpgmza-admin-map-table-container" class="wpgmza-card wpgmza-shadow-high wpgmza-datatable-container wpgmza-datatable-container-maps wpgmza-pad-y-20"></div>
 	</div>
 </div>
 

@@ -108,7 +108,8 @@ class Local extends Base {
 			\defined( 'WPE_PLUGIN_VERSION' ) ||
 			\defined( 'FLYWHEEL_CONFIG_DIR' ) ||
 			\defined( 'KINSTAMU_VERSION' ) ||
-			\defined( 'WPNET_INIT_PLUGIN_VERSION' )
+			\defined( 'WPNET_INIT_PLUGIN_VERSION' ) ||
+			! empty( $_ENV['WPAAS_V2_SITE_ID'] )
 		) {
 			return true;
 		}
@@ -442,8 +443,8 @@ class Local extends Base {
 		}
 		if ( $toolfail ) {
 			$this->tools_missing = true;
-			\add_action( 'network_admin_notices', array( $this, 'tool_installation_failed_notice' ) );
-			\add_action( 'admin_notices', array( $this, 'tool_installation_failed_notice' ) );
+			\add_action( 'ewwio_network_admin_notices', array( $this, 'tool_installation_failed_notice' ) );
+			\add_action( 'ewwwio_admin_notices', array( $this, 'tool_installation_failed_notice' ) );
 		}
 	}
 

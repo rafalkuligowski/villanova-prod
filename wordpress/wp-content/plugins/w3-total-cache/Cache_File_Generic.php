@@ -224,6 +224,15 @@ class Cache_File_Generic extends Cache_File {
 			return array( $data, $has_old_data );
 		}
 
+		/**
+		 * Skip serving _old cache files when disabled
+		 *
+		 * On flush we trigger Elementor flush (if detected) which removes CSS/JS assets needed for _old files.
+		 */
+		if ( ! $this->_use_expired_data ) {
+			return array( null, $has_old_data );
+		}
+
 		$path_old     = $path . '_old';
 		$too_old_time = time() - 30;
 
@@ -255,13 +264,15 @@ class Cache_File_Generic extends Cache_File {
 	 * @return array
 	 */
 	private function _read( $path ) {
+		// Canonicalize path to avoid unexpected variants.
+		$path = realpath( $path );
+
 		if ( ! is_readable( $path ) ) {
 			return null;
 		}
 
 		// make sure reading from cache folder canonicalize to avoid unexpected variants.
 		$base_path = realpath( $this->_cache_dir );
-		$path      = realpath( $path );
 
 		if ( strlen( $base_path ) <= 0 || substr( $path, 0, strlen( $base_path ) ) !== $base_path ) {
 			return null;
@@ -320,6 +331,15 @@ class Cache_File_Generic extends Cache_File {
 		$dir = dirname( $path );
 		if ( file_exists( $dir . DIRECTORY_SEPARATOR . '.htaccess' ) ) {
 			@unlink( $dir . DIRECTORY_SEPARATOR . '.htaccess' );
+		}
+
+		/**
+		 * Delete cache file directly instead of renaming to _old
+		 *
+		 * On flush we trigger Elementor flush (if detected) which removes CSS/JS assets needed for _old files.
+		 */
+		if ( ! $this->_use_expired_data ) {
+			return @unlink( $path );
 		}
 
 		$old_entry_path = $path . '_old';
@@ -395,7 +415,7 @@ class Cache_File_Generic extends Cache_File {
 				$c = new Cache_File_Cleaner_Generic_HardDelete(
 					array(
 						'cache_dir'       => $this->_flush_dir . DIRECTORY_SEPARATOR . $group,
-						'exclude'         => $this->_exclude,
+						'exclude'         => $this->_exclude, // phpcs:ignore WordPressVIPMinimum
 						'clean_timelimit' => $this->_flush_timelimit,
 					)
 				);
@@ -403,7 +423,7 @@ class Cache_File_Generic extends Cache_File {
 				$c = new Cache_File_Cleaner_Generic(
 					array(
 						'cache_dir'       => $this->_flush_dir,
-						'exclude'         => $this->_exclude,
+						'exclude'         => $this->_exclude, // phpcs:ignore WordPressVIPMinimum
 						'clean_timelimit' => $this->_flush_timelimit,
 					)
 				);
@@ -443,7 +463,7 @@ class Cache_File_Generic extends Cache_File {
 			$c = new Cache_File_Cleaner_Generic_HardDelete(
 				array(
 					'cache_dir'       => $this->_flush_dir . DIRECTORY_SEPARATOR . $group,
-					'exclude'         => $this->_exclude,
+					'exclude'         => $this->_exclude, // phpcs:ignore WordPressVIPMinimum
 					'clean_timelimit' => $this->_flush_timelimit,
 					'time_min_valid'  => $extension['before_time'],
 				)
@@ -452,7 +472,7 @@ class Cache_File_Generic extends Cache_File {
 			$c = new Cache_File_Cleaner_Generic(
 				array(
 					'cache_dir'       => $this->_flush_dir,
-					'exclude'         => $this->_exclude,
+					'exclude'         => $this->_exclude, // phpcs:ignore WordPressVIPMinimum
 					'clean_timelimit' => $this->_flush_timelimit,
 					'time_min_valid'  => $extension['before_time'],
 				)
