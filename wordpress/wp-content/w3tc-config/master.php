@@ -1,5 +1,5 @@
 <?php exit; ?>{
-    "version": "2.8.9",
+    "version": "2.9.1",
     "cluster.messagebus.debug": false,
     "cluster.messagebus.enabled": false,
     "cluster.messagebus.sns.region": "",
@@ -994,7 +994,7 @@
     "timelimit.cdn_test": 300,
     "timelimit.domain_rename": 120,
     "timelimit.minify_recommendations": 600,
-    "common.instance_id": 0,
+    "common.instance_id": 171024584,
     "common.force_master": true,
     "extensions.active": [],
     "extensions.active_frontend": [],
@@ -1044,9 +1044,23 @@
     "cdnfsd.stackpath2.site_root_domain": 0,
     "cdnfsd.stackpath2.domain": [],
     "cdnfsd.stackpath2.ssl": "auto",
-    "extension.imageservice": false,
+    "extension.imageservice": "0",
     "pgcache.bad_behavior_path": "",
     "newrelic": {
         "monitoring_type": "apm"
-    }
+    },
+    "page": "w3tc_general",
+    "_wpnonce": "b4826fb78c",
+    "_wp_http_referer": "\/wp-admin\/admin.php?page=w3tc_general&_wpnonce=b4826fb78c",
+    "w3tc_save_options": "Save Settings",
+    "opcache.engine": "OPcache",
+    "opcache.validate_timestamps": "1",
+    "allcache.wp_cron": "0",
+    "extension.user-experience-emoji": "0",
+    "extension.user-experience-defer-scripts": "0",
+    "extension.user-experience-remove-cssjs": "0",
+    "extension.user-experience-preload-requests": "0",
+    "extension.user-experience-oembed": "0",
+    "file_locking": "0",
+    "file_nfs": "0"
 }

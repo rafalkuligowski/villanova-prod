@@ -2,14 +2,23 @@
 # This file is distributed under the same license as the Plugins - Polylang - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-04-22 07:35:56+0000\n"
+"PO-Revision-Date: 2025-11-10 16:01:55+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
-"X-Generator: GlotPress/4.0.1\n"
+"X-Generator: GlotPress/4.0.3\n"
 "Language: pl\n"
 "Project-Id-Version: Plugins - Polylang - Stable (latest release)\n"
+
+#. translators: Post id.
+#: modules/wpml/wpml-legacy-api.php:265
+msgid "No such post for ID = %d"
+msgstr "Brak takiego wpisu dla ID = %d"
+
+#: modules/wpml/wpml-legacy-api.php:259
+msgid "Missing post ID"
+msgstr "Brak identyfikatora wpisu"
 
 #: settings/settings-url.php:70
 msgid "Some themes or plugins may not be fully compatible with the language defined by domains."
@@ -750,7 +759,7 @@ msgstr "Aby twoja witryna działała poprawnie, musisz wybrać język dla wszyst
 msgid "Content without language"
 msgstr "Treść bez języka"
 
-#: include/license.php:286
+#: include/license.php:293
 msgid "Your license key has been disabled."
 msgstr "Klucz licencji został dezaktywowany."
 
@@ -774,7 +783,7 @@ msgid "North Macedonia"
 msgstr "Północna Macedonia"
 
 #. translators: %1$s is a date, %2$s is link start tag, %3$s is link end tag.
-#: include/license.php:334
+#: include/license.php:341
 msgid "Your license key will expire soon! Precisely, it will expire on %1$s. %2$sRenew your license key today!%3$s"
 msgstr "Twój klucz licencyjny wkrótce wygaśnie! Wygaśnie dokładnie %1$s. %2$sOdnów swój klucz licencyjny już dziś!%3$s."
 
@@ -822,16 +831,16 @@ msgstr "WP SYNTEX"
 msgid "Dismiss this notice."
 msgstr "Ukryj komunikat."
 
-#: include/filters.php:432
+#: include/filters.php:435
 msgid "User"
 msgstr "Użytkownik"
 
 #. translators: %s is a language native name
-#: include/filters.php:423
+#: include/filters.php:426
 msgid "User description - %s"
 msgstr "Opis użytkownika - %s"
 
-#: include/filters.php:399
+#: include/filters.php:402
 msgid "Translated user descriptions"
 msgstr "Przetłumaczone opisy użytkownika"
 
@@ -855,37 +864,37 @@ msgid "Upgrade now."
 msgstr "Aktualizuj teraz."
 
 #. translators: %s is a date
-#: include/license.php:342
+#: include/license.php:349
 msgid "Your license key expires on %s."
 msgstr "Klucz Twojej licencji wygasa %s."
 
-#: include/license.php:329
+#: include/license.php:336
 msgid "The license key never expires."
 msgstr "Klucz licencji nigdy nie wygasa."
 
 #. translators: %1$s is link start tag, %2$s is link end tag
-#: include/license.php:317
+#: include/license.php:324
 msgid "Your license key has reached its activation limit. %1$sView possible upgrades%2$s now."
 msgstr "Klucz licencyjny osiągnął limit aktywacji. %1$sZobacz możliwe opcje%2$s teraz."
 
 #. translators: %s is a product name
-#: include/license.php:311
+#: include/license.php:318
 msgid "This is not a %s license key."
 msgstr "Nie jest to %s klucz licencji."
 
 #. translators: %1$s is a product name, %2$s is link start tag, %3$s is link
 #. end tag.
-#: include/license.php:302
+#: include/license.php:309
 msgid "Your %1$s license key is not active for this URL. Please %2$svisit your account page%3$s to manage your license key URLs."
 msgstr "Twój %1$s klucz licencyjny nie jest aktywny dla tego adresu URL. Proszę %2$sprzejdź do swojego konta%3$s, aby zarządzać adresami URL kluczy licencyjnych."
 
 #. translators: %1$s is link start tag, %2$s is link end tag.
-#: include/license.php:292
+#: include/license.php:299
 msgid "Invalid license. Please %1$svisit your account page%2$s and verify it."
 msgstr "Licencja jest nieprawidłowa. Proszę %1$sprzejdź do swojego konta%2$s i zweryfikuj to,"
 
 #. translators: %1$s is a date, %2$s is link start tag, %3$s is link end tag.
-#: include/license.php:277
+#: include/license.php:284
 msgid "Your license key expired on %1$s. Please %2$srenew your license key%3$s."
 msgstr "Klucz licencyjny wygasł %1$s. Proszę %2$sodnów swój klucz licencyjny%3$s."
 
@@ -913,11 +922,11 @@ msgstr "Pozwala na używanie tego samego odnośnika dla wpisów i taksonomii w r
 msgid "Share slugs"
 msgstr "Współdzielenie odnośników"
 
-#: install/plugin-updater.php:573
+#: install/plugin-updater.php:574
 msgid "Error"
 msgstr "Błąd"
 
-#: install/plugin-updater.php:573
+#: install/plugin-updater.php:574
 msgid "You do not have permission to install plugin updates"
 msgstr "Brak uprawnień do aktualizacji wtyczek"
 
@@ -1010,7 +1019,7 @@ msgstr "Wyłączono"
 msgid "Activate this module"
 msgstr "Aktywuj ten moduł"
 
-#: include/license.php:326 settings/settings-module.php:156
+#: include/license.php:333 settings/settings-module.php:156
 msgid "Deactivate"
 msgstr "Wyłącz"
 
@@ -2031,7 +2040,7 @@ msgstr "Strona z wpisami"
 msgid "Front Page"
 msgstr "Strona główna"
 
-#: admin/admin-nav-menu.php:82
+#: admin/admin-nav-menu.php:90
 msgid "Add to Menu"
 msgstr "Dodaj do menu"
 
@@ -2425,11 +2434,11 @@ msgstr "O Polylang"
 msgid "The language was created, but the WordPress language file was not downloaded. Please install it manually."
 msgstr "Język został dodany, ale plik językowy WordPress nie został załadowany. Proszę zainstalować go ręcznie."
 
-#: admin/admin-base.php:457 admin/admin-base.php:475
+#: admin/admin-base.php:461 admin/admin-base.php:479
 msgid "Filters content by language"
 msgstr "Filtrowanie treści wg języka"
 
-#: admin/admin-base.php:448
+#: admin/admin-base.php:452
 msgid "Show all languages"
 msgstr "Pokaż wszystkie języki"
 
@@ -2446,7 +2455,7 @@ msgstr "Tekst widżetu"
 msgid "Widget title"
 msgstr "Tytuł widżetu"
 
-#: admin/admin-nav-menu.php:49 include/nav-menu.php:74
+#: admin/admin-nav-menu.php:59 include/nav-menu.php:74
 #: include/widget-languages.php:32
 msgid "Language switcher"
 msgstr "Przełącznik języka"
@@ -2508,8 +2517,8 @@ msgid "(no parent)"
 msgstr "(brak rodzica)"
 
 #: admin/admin-base.php:124 admin/admin-base.php:148
-#: admin/admin-classic-editor.php:77 admin/admin-nav-menu.php:72
-#: admin/admin-nav-menu.php:75 admin/admin-nav-menu.php:108
+#: admin/admin-classic-editor.php:77 admin/admin-nav-menu.php:80
+#: admin/admin-nav-menu.php:83 admin/admin-nav-menu.php:116
 #: admin/admin-notices.php:114 admin/admin-notices.php:187
 #: include/nav-menu.php:73 modules/wizard/view-wizard-step-languages.php:28
 #: modules/wizard/wizard.php:510 settings/settings.php:129
