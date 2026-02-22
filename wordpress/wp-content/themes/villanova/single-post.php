@@ -110,20 +110,17 @@
                     </a>
                 </div>
                 <div class="posts-wrapper">
-                    <?php $i = 0; ?>
-                    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-                        <a href="<?php echo get_permalink(); ?>" class="post">
-                            <div class="image" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');"></div>
-                            <div class="title"><?php the_title(); ?></div>
-                            <div class="excerpt">
-                                <?php echo wp_trim_words( get_the_excerpt(), 20, '…' ); ?>
-                            </div>
-                            <div class="date">
-                                Dodano dnia: <?php echo get_the_date(); ?>
-                            </div>
-                            <button class="button clear dark" style="margin: 15px 0;">Czytaj więcej</button>
-                        </a>
-                        <?php $i++; ?>
+                    <?php while ( $the_query->have_posts() ) : $the_query->the_post();
+                        $args = [
+                            'link'  => get_permalink(),
+                            'thumb' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
+                            'title' => get_the_title(),
+                            'short' => get_the_excerpt(),
+                            'date'  => get_the_date(),
+                        ];
+
+                        get_template_part('template-parts/post-card', null, $args);
+                    ?>
                     <?php endwhile; ?>
                 </div>
                 <?php wp_reset_postdata(); ?>

@@ -277,125 +277,143 @@ add_action('template_redirect', function() {
 
 add_filter('redirect_canonical', '__return_false', 999);
 add_filter('pll_check_canonical_url', '__return_false', 999);
-//end
-
-
 
 function custom_breadcrumbs() {
-	if (is_front_page()) {
-		return;
-	}
 
-	$home_title = pll__('Strona główna');
-	$position   = 1;
+    if (is_front_page()) {
+        return;
+    }
 
-	global $post;
+    $home_title = pll__('Strona główna');
+    $position   = 1;
+    $items      = [];
 
-	echo '<nav class="breadcrumbs" aria-label="Breadcrumbs">';
-	echo '<ol itemscope itemtype="https://schema.org/BreadcrumbList">';
+    global $post;
 
-	// Home
-	echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-	echo '<a itemprop="item" href="' . esc_url(home_url('/')) . '">';
-	echo '<span itemprop="name">' . esc_html($home_title) . '</span>';
-	echo '</a>';
-	echo '<meta itemprop="position" content="' . $position++ . '">';
-	echo '</li>';
+    echo '<nav class="breadcrumbs" aria-label="Breadcrumbs">';
+    echo '<ol>';
 
-	// Blog page
-	if (is_home()) {
-		echo breadcrumb_current(pll__('Blog'), $position);
-	}
+    // Home
+    echo '<li><a href="' . esc_url(home_url('/')) . '">' . esc_html($home_title) . '</a></li>';
 
-	// Single post
-	elseif (is_single() && !is_attachment()) {
-    	if ( is_singular( 'post' ) ) {
-            $blog_page_id = get_option( 'page_for_posts' );
+    $items[] = [
+        "@type"    => "ListItem",
+        "position" => $position++,
+        "name"     => $home_title,
+        "item"     => home_url('/')
+    ];
 
-            if ( $blog_page_id ) {
-                echo breadcrumb_link(
-                    get_permalink( $blog_page_id ),
-                    get_the_title( $blog_page_id ),
-                    $position++
-                );
+    // Blog page
+    if (is_home()) {
+
+        $current_title = pll__('Blog');
+        echo '<li>' . esc_html($current_title) . '</li>';
+
+        $items[] = [
+            "@type"    => "ListItem",
+            "position" => $position,
+            "name"     => $current_title,
+            "item"     => get_permalink(get_option('page_for_posts'))
+        ];
+    }
+
+    // Single post
+    elseif (is_single() && !is_attachment()) {
+
+        if (is_singular('post')) {
+            $blog_page_id = get_option('page_for_posts');
+
+            if ($blog_page_id) {
+                $blog_url   = get_permalink($blog_page_id);
+                $blog_title = get_the_title($blog_page_id);
+
+                echo '<li><a href="' . esc_url($blog_url) . '">' . esc_html($blog_title) . '</a></li>';
+
+                $items[] = [
+                    "@type"    => "ListItem",
+                    "position" => $position++,
+                    "name"     => $blog_title,
+                    "item"     => $blog_url
+                ];
             }
         }
 
-		$post_type = get_post_type();
-		$post_type_object = get_post_type_object($post_type);
+        if ($post->post_parent) {
+            $parents = array_reverse(get_post_ancestors($post->ID));
+            foreach ($parents as $parent) {
+                $parent_url   = get_permalink($parent);
+                $parent_title = get_the_title($parent);
 
-		// Add CPT archive link (but NOT for 'usluga' since it has no archive)
-		if ($post_type_object && !is_singular('post') && $post_type !== 'usluga' && get_post_type_archive_link($post_type)) {
-			echo breadcrumb_link(get_post_type_archive_link($post_type), $post_type_object->labels->name, $position++);
-		}
+                echo '<li><a href="' . esc_url($parent_url) . '">' . esc_html($parent_title) . '</a></li>';
 
-		if ($post->post_parent) {
-			$parents = array_reverse(get_post_ancestors($post->ID));
-			foreach ($parents as $parent) {
-				$parent_url = get_permalink($parent);
-				// Extra safety: ensure no /usluga/ in URL
-				$parent_url = str_replace('/usluga/', '/', $parent_url);
-				echo breadcrumb_link($parent_url, get_the_title($parent), $position++);
-			}
-		}
+                $items[] = [
+                    "@type"    => "ListItem",
+                    "position" => $position++,
+                    "name"     => $parent_title,
+                    "item"     => $parent_url
+                ];
+            }
+        }
 
-		echo breadcrumb_current(get_the_title(), $position);
-	}
+        $current_title = get_the_title();
 
-	// Pages
-	elseif (is_page()) {
-		if ($post->post_parent) {
-			$parents = array_reverse(get_post_ancestors($post->ID));
-			foreach ($parents as $parent) {
-				echo breadcrumb_link(get_permalink($parent), get_the_title($parent), $position++);
-			}
-		}
-		echo breadcrumb_current(get_the_title(), $position);
-	}
+        echo '<li>' . esc_html($current_title) . '</li>';
 
-	// Category
-	elseif (is_category()) {
-		echo breadcrumb_current(single_cat_title('', false), $position);
-	}
-
-	// Tag
-	elseif (is_tag()) {
-		echo breadcrumb_current(single_tag_title('', false), $position);
-	}
-
-	// Search
-	elseif (is_search()) {
-		echo breadcrumb_current(
-			sprintf('%s "%s"', pll__('Wyniki wyszukiwania dla'), get_search_query()),
-			$position
-		);
-	}
-
-	//Author
-	elseif ( is_author() ) {
-
-        $author_id   = get_queried_object_id();
-        $author_name = get_the_author_meta( 'display_name', $author_id );
-
-        echo breadcrumb_current(
-            sprintf( '%s: %s', pll__( 'Autor' ), $author_name ),
-            $position
-        );
+        $items[] = [
+            "@type"    => "ListItem",
+            "position" => $position,
+            "name"     => $current_title,
+            "item"     => get_permalink()
+        ];
     }
 
-	// Archive
-	elseif (is_archive()) {
-		echo breadcrumb_current(post_type_archive_title('', false), $position);
-	}
+    // Page
+    elseif (is_page()) {
 
-	// 404
-	elseif (is_404()) {
-		echo breadcrumb_current(pll__('Strona nie znaleziona'), $position);
-	}
+        if ($post->post_parent) {
+            $parents = array_reverse(get_post_ancestors($post->ID));
+            foreach ($parents as $parent) {
+                $parent_url   = get_permalink($parent);
+                $parent_title = get_the_title($parent);
 
-	echo '</ol>';
-	echo '</nav>';
+                echo '<li><a href="' . esc_url($parent_url) . '">' . esc_html($parent_title) . '</a></li>';
+
+                $items[] = [
+                    "@type"    => "ListItem",
+                    "position" => $position++,
+                    "name"     => $parent_title,
+                    "item"     => $parent_url
+                ];
+            }
+        }
+
+        $current_title = get_the_title();
+
+        echo '<li>' . esc_html($current_title) . '</li>';
+
+        $items[] = [
+            "@type"    => "ListItem",
+            "position" => $position,
+            "name"     => $current_title,
+            "item"     => get_permalink()
+        ];
+    }
+
+    echo '</ol>';
+    echo '</nav>';
+
+    // JSON-LD OUTPUT
+    $schema = [
+        "@context" => "https://schema.org",
+        "@type"    => "BreadcrumbList",
+        "itemListElement" => $items
+    ];
+
+    echo '<script type="application/ld+json">';
+    echo json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    echo '</script>';
 }
+
 
 /**
  * Helper: linked breadcrumb
@@ -453,4 +471,47 @@ pll_register_string( 'contact_data', 'Dane kontaktowe', 'villanova' );
 pll_register_string( 'pn_pt', 'Pn-Pt:', 'villanova' );
 pll_register_string( 'sb', 'Sb:', 'villanova' );
 pll_register_string( 'socialmedia', 'Znajdź nas w mediach społecznościowych:', 'villanova' );
+pll_register_string( 'no_services', 'Brak usług do wyświetlenia. Prosimy wrócić później.', 'villanova' );
+pll_register_string( 'service_h2_title', 'Tytuł h2 dla strony usługi', 'villanova' );
+pll_register_string( 'interested_in_this', 'To może Cię zainteresować', 'villanova' );
+pll_register_string( 'go_home', 'Powrót na stronę główną', 'villanova' );
+pll_register_string( 'not_found', 'Strony nie znaleziono', 'villanova' );
+
+require get_template_directory() . '/inc/menu-functions.php';
+
+//start disable commencts
+add_action('admin_init', function () {
+
+    foreach (get_post_types() as $post_type) {
+        if (post_type_supports($post_type, 'comments')) {
+            remove_post_type_support($post_type, 'comments');
+            remove_post_type_support($post_type, 'trackbacks');
+        }
+    }
+});
+
+add_filter('comments_open', '__return_false', 20, 2);
+add_filter('pings_open', '__return_false', 20, 2);
+
+add_filter('comments_array', '__return_empty_array', 10, 2);
+
+add_action('admin_menu', function () {
+    remove_menu_page('edit-comments.php');
+});
+
+add_action('init', function () {
+    if (is_admin_bar_showing()) {
+        remove_action('admin_bar_menu', 'wp_admin_bar_comments_menu', 60);
+    }
+});
+// end disable comments
+
+function add_defer_to_jquery($tag, $handle, $src) {
+    if ($handle === 'jquery-core') {
+        return '<script type="text/javascript" src="' . $src . '" defer></script>';
+    }
+    return $tag;
+}
+add_filter('script_loader_tag', 'add_defer_to_jquery', 10, 3);
+
 ?>

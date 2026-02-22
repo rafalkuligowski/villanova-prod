@@ -2,15 +2,10 @@
 <html <?php language_attributes(); ?>>
     <head>
         <meta charset="<?php bloginfo( 'charset' ); ?>" />
-        <!--<title><?php bloginfo('name'); ?> | <?php is_front_page() ? bloginfo('description') : wp_title(''); ?></title>-->
 		<meta name="google-site-verification" content="1Y3YBnjKFxRCsoVYX41O-nVd0kfUA8kOUjzykFlzr14" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="<?php bloginfo('description'); ?>">
-        <style>
-            /*CRITICAL CSS*/
-            @font-face{font-family:Montserrat;src:url('<?php echo get_template_directory_uri(); ?>/assets/fonts/Montserrat.ttf')}*,:after,:before{box-sizing:border-box}body{margin:0;font-family:Montserrat;color:#1a1919;position:relative;overflow-x:hidden}a{color:inherit;text-decoration:none}#header{width:100%;position:fixed;left:50%;top:0;transform:translateX(-50%);z-index:1000;padding:10px;color:#fff;box-shadow:inset 0 100px 80px -65px rgba(0,0,0,.8)}#header .container{width:100%;max-width:1620px;margin:0 auto}#header .container .top-bar{display:flex;align-items:center;justify-content:space-between;background:#ddd8d4;color:#1e1e1e;margin-bottom:15px;border-radius:15px;padding:7px 15px;font-size:12px}#header .container .top-bar .header-col{display:flex;align-items:center}#header .container .top-bar .header-col p{margin:0 5px}#header .container .top-bar .header-col svg{margin:0 5px}#header .container .header-content{display:flex;align-items:center;justify-content:space-between;font-size:16px}#header .container .header-content .header-col{display:flex;align-items:center}#header .container .header-content .header-col .logo img{filter:brightness(0) invert(1);width:auto;height:40px}#header .container .header-content .header-col .navigation ul{display:flex;align-items:center}#header .container .header-content .header-col .navigation ul li{list-style:none;margin-right:10px}#header .container .header-content .header-col .navigation ul li a{color:#fff}#mobile-header{display:none;width:100%;position:fixed;left:0;top:0;z-index:1000;padding:10px;color:#fff;box-shadow:inset 0 50px 40px -35px rgba(0,0,0,.8)}#mobile-header .mobile-header-content{display:flex;align-items:center;justify-content:space-between;font-size:16px}#mobile-header .mobile-header-content .logo img{filter:brightness(0) invert(1);width:auto;height:35px}#mobile-header .mobile-header-content .menu-icon{width:25px}#mobile-header .mobile-header-content .menu-icon svg{fill:#fff;width:25px;height:auto}#mobile-header .mobile-menu{width:100vw;max-width:400px;height:100vh;position:fixed;background:#ddd8d4;left:0;top:0;padding:20px 20px 60px;color:#1e1e1e;display:none}#mobile-header .mobile-menu .column{display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%}#mobile-header .mobile-menu .column .logo{width:100%;display:flex;justify-content:space-between;align-items:center}#mobile-header .mobile-menu .column .navigation{width:100%;display:block}#mobile-header .mobile-menu .column .navigation ul{list-style:none;padding:0}#mobile-header .mobile-menu .column .navigation ul li{padding:10px 0}#mobile-header .mobile-menu .column .navigation .menu-item.mail-icon:before{filter:brightness(0)}#mobile-header .mobile-menu .column .navigation .menu-item.phone-icon:before{filter:brightness(0)}#mobile-header .mobile-menu .column .navigation .button.clear.light{color:#1e1e1e;border:none}.container{width:100%;max-width:1080px;margin:0 auto;padding:10px}.button{font-size:16px;padding:12px 24px;border:none;border-radius:30px;font-family:Montserrat;font-weight:500}.button.filled.primary{background:#ddd8d4;color:#1e1e1e}.button.filled.primary a{color:#1e1e1e!important}.button.clear.light{background:0 0;color:#fff;border-bottom:1px solid #fff;padding:8px 5px;border-radius:0}.menu-item.mail-icon{display:flex;align-items:center}.menu-item.mail-icon:before{content:"";width:25px;height:25px;margin-right:5px;display:block;background-image:url('https://villanova.pl/wp-content/themes/villanova/scss/../assets/icons/mail.svg');background-size:90% auto;background-position:center;background-repeat:no-repeat}.menu-item.phone-icon{display:flex;align-items:center}.menu-item.phone-icon:before{content:"";width:25px;height:25px;margin-right:5px;display:block;background-image:url('https://villanova.pl/wp-content/themes/villanova/scss/../assets/icons/phone.svg');background-size:90% auto;background-position:center;background-repeat:no-repeat}.service .photo .filter{position:absolute;width:100%;height:100%;left:0;top:0;background:rgba(221,216,212,.45);border-radius:30px;display:none}#hero{width:100%;height:100vh;background-color:#2a2121;background-size:cover;background-position:center;padding-top:80px;position:relative;overflow:hidden;color:#fff}#hero .videobg{position:absolute;object-fit:cover;width:100%;height:100%;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10}#hero .videobg-filter{position:absolute;width:100%;height:100%;z-index:15;background:#2a2121;left:0;top:0;opacity:.7}#hero .container.center{z-index:25;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}#hero .container.center .title{margin:10px 0 25px;font-size:54px;max-width:85%;font-weight:500;text-shadow:0 4px 10px rgba(0,0,0,.5)}#hero .container.center .subtitle{margin:0;font-size:16px;max-width:50%}#hero .container.center .description{margin:0;font-size:14px;max-width:50%}#hero .container.center .buttons{display:flex;align-items:center;margin:20px 0}#hero .container.center .buttons button{margin-right:15px}#hero .container.center .partners{margin-top:30px;max-width:700px}#hero .container.center .partners .list{opacity:.5;margin-top:10px}#hero .container.center .partners .list .slide img{width:100%;height:auto;max-width:115px;max-height:25px;margin:0 5px}#hero .scroll-down{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);width:20px;z-index:30}@media (max-width:1580px){#header .container .header-content .header-col a,#header .container .header-content .header-col li{font-size:14px}#header .container .header-content .header-col .menu-item.mail-icon:before,#header .container .header-content .header-col .menu-item.phone-icon:before{width:20px;height:20px}#header .container .header-content .header-col .logo img{height:35px}}@media (max-width:1420px){#header{display:none}#mobile-header{display:flex}.button{font-size:14px}#hero .container.center{max-width:700px}#hero .container.center .subtitle{max-width:100%;text-align:center}#hero .container.center .title{max-width:100%;text-align:center;font-size:46px}#hero .container.center .description{max-width:100%;text-align:center}#hero .container.center .buttons{justify-content:center}#hero .container.center .list{justify-content:center}#hero .container.center .partners .list .slide{display:flex;justify-content:center;align-items:center}}@media (max-width:1180px){.container{padding:10px 15px}}@media (max-width:1024px){#hero .container.center{max-width:550px}#hero .container.center .title{font-size:42px}}@media (max-width:680px){.button{font-size:12px}}@media (max-width:540px){#hero .container.center{max-width:100%}#hero .container.center .title{font-size:38px}#hero .container.center .subtitle{font-size:14px}#hero .container.center .description{font-size:12px}#hero .container.center .buttons{flex-wrap:wrap}}ul{box-sizing:border-box}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}:root{--wp--preset--aspect-ratio--square:1;--wp--preset--aspect-ratio--4-3:4/3;--wp--preset--aspect-ratio--3-4:3/4;--wp--preset--aspect-ratio--3-2:3/2;--wp--preset--aspect-ratio--2-3:2/3;--wp--preset--aspect-ratio--16-9:16/9;--wp--preset--aspect-ratio--9-16:9/16;--wp--preset--color--black:#000;--wp--preset--color--cyan-bluish-gray:#abb8c3;--wp--preset--color--white:#fff;--wp--preset--color--pale-pink:#f78da7;--wp--preset--color--vivid-red:#cf2e2e;--wp--preset--color--luminous-vivid-orange:#ff6900;--wp--preset--color--luminous-vivid-amber:#fcb900;--wp--preset--color--light-green-cyan:#7bdcb5;--wp--preset--color--vivid-green-cyan:#00d084;--wp--preset--color--pale-cyan-blue:#8ed1fc;--wp--preset--color--vivid-cyan-blue:#0693e3;--wp--preset--color--vivid-purple:#9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple:linear-gradient(135deg,rgba(6,147,227,1) 0%,#9b51e0 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan:linear-gradient(135deg,#7adcb4 0%,#00d082 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange:linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red:linear-gradient(135deg,rgba(255,105,0,1) 0%,#cf2e2e 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray:linear-gradient(135deg,#eee 0%,#a9b8c3 100%);--wp--preset--gradient--cool-to-warm-spectrum:linear-gradient(135deg,#4aeadc 0%,#9778d1 20%,#cf2aba 40%,#ee2c82 60%,#fb6962 80%,#fef84c 100%);--wp--preset--gradient--blush-light-purple:linear-gradient(135deg,#ffceec 0%,#9896f0 100%);--wp--preset--gradient--blush-bordeaux:linear-gradient(135deg,#fecda5 0%,#fe2d2d 50%,#6b003e 100%);--wp--preset--gradient--luminous-dusk:linear-gradient(135deg,#ffcb70 0%,#c751c0 50%,#4158d0 100%);--wp--preset--gradient--pale-ocean:linear-gradient(135deg,#fff5cb 0%,#b6e3d4 50%,#33a7b5 100%);--wp--preset--gradient--electric-grass:linear-gradient(135deg,#caf880 0%,#71ce7e 100%);--wp--preset--gradient--midnight:linear-gradient(135deg,#020381 0%,#2874fc 100%);--wp--preset--font-size--small:13px;--wp--preset--font-size--medium:20px;--wp--preset--font-size--large:36px;--wp--preset--font-size--x-large:42px;--wp--preset--spacing--20:.44rem;--wp--preset--spacing--30:.67rem;--wp--preset--spacing--40:1rem;--wp--preset--spacing--50:1.5rem;--wp--preset--spacing--60:2.25rem;--wp--preset--spacing--70:3.38rem;--wp--preset--spacing--80:5.06rem;--wp--preset--shadow--natural:6px 6px 9px rgba(0,0,0,.2);--wp--preset--shadow--deep:12px 12px 50px rgba(0,0,0,.4);--wp--preset--shadow--sharp:6px 6px 0px rgba(0,0,0,.2);--wp--preset--shadow--outlined:6px 6px 0px -3px rgba(255,255,255,1),6px 6px rgba(0,0,0,1);--wp--preset--shadow--crisp:6px 6px 0px rgba(0,0,0,1)}button::-moz-focus-inner{padding:0;border:0}
-        </style>
         <link rel='preload' id='style-css' href='<?php echo get_template_directory_uri(); ?>/scss/main.css' as='style' onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
         <link rel='preload' id='style-aos' href='<?php echo get_template_directory_uri(); ?>/scss/aos.css' as='style' onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
         <link rel='preload' id='style-slick' href='<?php echo get_template_directory_uri(); ?>/scss/slick.css' as='style' onload="this.onload=null;this.rel='stylesheet'" type='text/css' media='all' />
@@ -19,10 +14,11 @@
             <link rel='stylesheet' id='style-aos' href='<?php echo get_template_directory_uri(); ?>/scss/aos.css' type='text/css' media='all' />
             <link rel='stylesheet' id='style-slick' href='<?php echo get_template_directory_uri(); ?>/scss/slick.css' type='text/css' media='all' />
         </noscript>
-        <script src="<?php echo get_template_directory_uri(); ?>/js/jquery.min.js" defer></script>
-        <script src="<?php echo get_template_directory_uri(); ?>/js/slick.min.js" defer></script>
-        <script src="<?php echo get_template_directory_uri(); ?>/js/aos.min.js" defer></script>
+        <link rel="preload" as="image" href="https://villanova.pl/wp-content/uploads/2023/08/bg_villa_nova_poster.jpg" fetchpriority="high">
         <?php wp_head(); ?>
+        <script src="<?php echo get_template_directory_uri(); ?>/js/slick.min.js"></script>
+        <script src="<?php echo get_template_directory_uri(); ?>/js/aos.min.js"></script>
+        <script src="<?php echo get_template_directory_uri(); ?>/js/index.js"></script>
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -79,12 +75,12 @@
                     </div>
                     <div class="header-col right">
                         <p><?php echo pll_e('Znajdź nas w mediach społecznościowych:');?></p>
-                        <a href="https://www.facebook.com/VillaNovaKlinikaDentystyczna/" target="_blank">
+                        <a href="https://www.facebook.com/VillaNovaKlinikaDentystyczna/" target="_blank" rel="no">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M20 10.0608C20 15.082 16.3383 19.2446 11.5583 20V12.9885H13.8825L14.325 10.0876H11.5583V8.20541C11.5583 7.41144 11.945 6.63844 13.1833 6.63844H14.4408V4.16852C14.4408 4.16852 13.2992 3.97233 12.2083 3.97233C9.93 3.97233 8.44167 5.36156 8.44167 7.87592V10.0868H5.90917V12.9876H8.44167V19.9992C3.6625 19.2429 0 15.0811 0 10.0608C0 4.50472 4.4775 0 10 0C15.5225 0 20 4.50388 20 10.0608Z" fill="#1E1E1E"/>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/villanovadentalclinic/" target="_blank">
+                        <a href="https://www.instagram.com/villanovadentalclinic/" target="_blank" rel="nofollow">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M5.87667 0.06C6.94333 0.0116667 7.28417 0 10 0C12.7158 0 13.0567 0.0116667 14.1233 0.06C15.6642 0.13 17.2025 0.559167 18.3217 1.67833C19.4383 2.795 19.8692 4.33083 19.94 5.87667C19.9883 6.94333 20 7.28417 20 10C20 12.7158 19.9883 13.0567 19.94 14.1233C19.8692 15.6683 19.4442 17.1992 18.3217 18.3217C17.205 19.4383 15.6683 19.8692 14.1233 19.94C13.0567 19.9883 12.7158 20 10 20C7.28417 20 6.94333 19.9883 5.87667 19.94C4.33333 19.8692 2.79917 19.4425 1.67833 18.3217C0.5625 17.2067 0.130833 15.6675 0.06 14.1233C0.0116667 13.0567 0 12.7158 0 10C0 7.28417 0.0116667 6.94333 0.06 5.87667C0.130833 4.33167 0.556667 2.8 1.67833 1.67833C2.79583 0.560833 4.33083 0.130833 5.87667 0.06ZM14.0408 1.86C12.9867 1.81167 12.67 1.80167 10 1.80167C7.33 1.80167 7.01333 1.81167 5.95917 1.86C4.86833 1.91 3.7525 2.1525 2.9525 2.9525C2.16583 3.73917 1.90917 4.87917 1.86 5.95917C1.81167 7.01333 1.80167 7.33 1.80167 10C1.80167 12.67 1.81167 12.9867 1.86 14.0408C1.91 15.1275 2.155 16.25 2.9525 17.0475C3.735 17.8308 4.88333 18.0908 5.95917 18.14C7.01333 18.1883 7.33 18.1983 10 18.1983C12.67 18.1983 12.9867 18.1883 14.0408 18.14C15.135 18.09 16.2458 17.8492 17.0475 17.0475C17.8367 16.2583 18.0908 15.125 18.14 14.0408C18.1883 12.9867 18.1983 12.67 18.1983 10C18.1983 7.33 18.1883 7.01333 18.14 5.95917C18.09 4.86583 17.8492 3.75417 17.0475 2.9525C16.2533 2.15833 15.1308 1.91 14.0408 1.86Z" fill="#1E1E1E"/>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M4.86501 9.99999C4.86501 7.16416 7.16417 4.86499 10 4.86499C12.8358 4.86499 15.135 7.16416 15.135 9.99999C15.135 12.8358 12.8358 15.135 10 15.135C7.16417 15.135 4.86501 12.8358 4.86501 9.99999ZM6.66667 9.99999C6.66667 11.8408 8.15917 13.3333 10 13.3333C11.8408 13.3333 13.3333 11.8408 13.3333 9.99999C13.3333 8.15916 11.8408 6.66666 10 6.66666C8.15917 6.66666 6.66667 8.15916 6.66667 9.99999Z" fill="#1E1E1E"/>
@@ -99,7 +95,21 @@
                             <?php the_custom_logo(); ?>
                         </div>
                         <nav class="navigation" role="navigation">
-                            <?php wp_nav_menu(array('theme_location' => 'top'));?>
+                            <?php
+                                $locations = get_nav_menu_locations();
+                                $menu_id   = $locations['top'] ?? 0;
+
+                                if (!$menu_id) return;
+
+                                $menu_items = wp_get_nav_menu_items($menu_id);
+                                $menu_tree  = build_menu_tree($menu_items);
+
+                                if ($menu_tree):
+                                ?>
+                                <div class="multi-level-menu">
+                                    <?php render_menu_level($menu_tree); ?>
+                                </div>
+                                <?php endif; ?>
                         </nav>
                     </div>
                     <div class="header-col right">
@@ -113,12 +123,12 @@
         <header id="mobile-header" role="banner">
             <div class="container">
                 <div class="mobile-header-content">
-                    <div class="menu-icon" onClick="openMenu()">
+                    <div class="menu-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
                             <g>
-                                <path d="M480,224H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,224,480,224z"/>
-                                <path d="M32,138.667h448c17.673,0,32-14.327,32-32s-14.327-32-32-32H32c-17.673,0-32,14.327-32,32S14.327,138.667,32,138.667z"/>
-                                <path d="M480,373.333H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,373.333,480,373.333z"/>
+                                <path fill="white" d="M480,224H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,224,480,224z"/>
+                                <path fill="white" d="M32,138.667h448c17.673,0,32-14.327,32-32s-14.327-32-32-32H32c-17.673,0-32,14.327-32,32S14.327,138.667,32,138.667z"/>
+                                <path fill="white" d="M480,373.333H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,373.333,480,373.333z"/>
                             </g>
                         </svg>
                     </div>
@@ -135,12 +145,27 @@
                             <div>
                                 <?php the_custom_logo(); ?>
                             </div>
-                            <div onClick="closeMenu()">
+                            <div class="close-menu">
                                 Zamknij
                             </div>
                         </div>
                         <nav class="navigation" role="navigation">
-                            <?php wp_nav_menu(array('theme_location' => 'top'));?>
+
+                            <?php
+                                $locations = get_nav_menu_locations();
+                                $menu_id   = $locations['top'] ?? 0;
+
+                                if (!$menu_id) return;
+
+                                $menu_items = wp_get_nav_menu_items($menu_id);
+                                $menu_tree  = build_menu_tree($menu_items);
+
+                                if ($menu_tree):
+                                ?>
+                                <div class="multi-level-menu">
+                                    <?php render_menu_level($menu_tree); ?>
+                                </div>
+                                <?php endif; ?>
                         </nav>
                     </div>
                     <nav class="navigation" role="navigation">
@@ -149,17 +174,3 @@
                 </div>
             </div>
         </header>
-        <script>
-            function openMenu(){
-                $('#mobile-menu').show();
-                $('#mobile-menu').removeClass('hidden');
-                $('#mobile-menu').addClass('show');
-            }
-            function closeMenu(){
-                $('#mobile-menu').removeClass('show');
-                $('#mobile-menu').addClass('hidden');
-                setTimeout(function (){
-                    $('#mobile-menu').hide();
-                }, 500);
-            }
-        </script>

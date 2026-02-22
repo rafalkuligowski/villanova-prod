@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<div class="wrapper page-service">
+<article class="wrapper page-service">
     <div class="page-banner" style="background-image: url('/wp-content/uploads/2023/09/tlo-uslugi-scaled.webp');">
         <div class="mask"></div>
         <div class="container">
@@ -10,126 +10,76 @@
             </div>
         </div>
     </div>
-    <div class="page-content">
-        <div class="container">
-            <?php
-            $args = array(
-                'post_type' => 'usluga',
-                'post_parent' => get_the_ID(),
-                'posts_per_page' => 100,
-            );
-            $the_query = new WP_Query( $args ); ?>
-            <?php if ( $the_query->have_posts() ) : ?>
-                <div style="color: #1E1E1E; margin-top: 20px;"><b>To może Cię zainteresować:</b></div>
-                <div class="featured-menu">
-                    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-                        <a href="<?php echo get_permalink(); ?>">
-                            <button class="button filled primary"><?php the_title(); ?></button>
-                        </a>
-                    <?php endwhile; ?>
-                </div>
-                <?php wp_reset_postdata(); ?>
-            <?php endif; ?>
-            <?php if ( get_the_post_thumbnail_url() ): ?>
-                <img src="<?php echo get_the_post_thumbnail_url(); ?>" class="single-thumbnail"/>
-            <?php endif; ?>
-            <?php the_content(); ?>
+    <div class="container">
 
-            <?php
-            $services_posts = [];
+        <?php
+        $content = get_the_content();
+        $content = apply_filters('the_content', $content);
 
-            $relationship_services = get_field('relationship_uslugi');
+        // Extract all h2 tags
+        preg_match_all('/<h2[^>]*>(.*?)<\/h2>/i', $content, $matches);
 
-            if( $relationship_services ) {
+        // Check if there are any h2 tags
+        if (count($matches[1]) > 1) :
+            echo '<div class="table-of-contents">';
+            echo '<h2>Spis treści</h2>'; // or "Table of Contents"
+            echo '<ul>';
 
-                $services_posts = $relationship_services;
+            foreach ($matches[1] as $index => $heading) {
+                $heading_text = strip_tags($heading);
+                $heading_id = 'heading-' . ($index + 1);
 
-            } else {
+                echo '<li><a href="#' . $heading_id . '">' . $heading_text . '</a></li>';
 
-                $current_id = get_the_ID();
-                $parent_id  = wp_get_post_parent_id($current_id);
-
-                $base_args = [
-                    'post_type'      => 'usluga',
-                    'posts_per_page' => 4,
-                    'orderby'        => 'menu_order',
-                    'order'          => 'ASC',
-                ];
-
-                $children_args = $base_args;
-                $children_args['post_parent'] = $current_id;
-
-                $query = new WP_Query($children_args);
-
-                if ($query->have_posts()) {
-
-                    $services_posts = $query->posts;
-
-                } else {
-
-                    $siblings_args = $base_args;
-                    $siblings_args['post_parent']  = $parent_id ? $parent_id : 0;
-                    $siblings_args['post__not_in'] = [$current_id];
-
-                    $query = new WP_Query($siblings_args);
-
-                    if ($query->have_posts()) {
-                        $services_posts = $query->posts;
-                    }
-                }
-
-                wp_reset_postdata();
+                $content = preg_replace(
+                    '/<h2([^>]*)>' . preg_quote($heading, '/') . '<\/h2>/i',
+                    '<h2$1 id="' . $heading_id . '">' . $heading . '</h2>',
+                    $content,
+                    1
+                );
             }
 
+            echo '</ul>';
+            echo '</div>';
+        endif;
+        ?>
+
+        <img src="<?php echo get_the_post_thumbnail_url(); ?>" class="single-thumbnail"/>
+        <div class="page-content">
+            <?php
+
+            if (count($matches[1]) <= 1) {
+                $content = apply_filters('the_content', get_the_content());
+            }
+
+            // Inject CTA after every 2nd paragraph
+            ob_start();
+            get_template_part('template-parts/banner-cta');
+            $cta = ob_get_clean();
+
+            $paragraphs = explode('</p>', $content);
+            $new_content = '';
+
+            foreach ($paragraphs as $index => $paragraph) {
+
+                if (trim($paragraph)) {
+                    $new_content .= $paragraph . '</p>';
+                }
+
+                if (($index + 1) % 7 === 0) {
+                    $new_content .= $cta;
+                }
+            }
+
+            echo $new_content;
+
             ?>
-
-            <?php if( !empty($services_posts) ): ?>
-                <div class="relationship-services">
-                    <h2>Sprawdź inne usługi</h2>
-                    <div class="services">
-
-                    <?php foreach( $services_posts as $item ):
-                        $post_id = is_object($item) ? $item->ID : $item;
-
-                        $title = get_the_title($post_id);
-                        $link  = get_permalink($post_id);
-                        $thumb = get_the_post_thumbnail_url($post_id, 'medium');
-                        $short = get_field('short-description', $post_id);
-                    ?>
-
-                        <div class="service">
-                            <a href="<?php echo esc_url($link); ?>">
-                                <?php if($thumb): ?>
-                                    <div class="photo" style="background-image: url('<?php echo esc_url($thumb); ?>');">
-                                        <div class="filter"></div>
-                                    </div>
-                                <?php endif; ?>
-
-                                <div class="details">
-                                    <h3 class="title"><?php echo esc_html($title); ?></h3>
-
-                                    <?php if($short): ?>
-                                        <div class="description">
-                                            <?php echo esc_html($short); ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <div class="show-more">
-                                        <?php echo pll__('Czytaj więcej'); ?>
-                                    </div>
-                                </div>
-
-                            </a>
-                        </div>
-
-                    <?php endforeach; ?>
-
-                    </div>
-                </div>
-                <?php wp_reset_postdata(); ?>
-            <?php endif; ?>
         </div>
+
+        <?php get_template_part('template-parts/faq'); ?>
+        <?php get_template_part('template-parts/relationship-services'); ?>
+
     </div>
-</div>
+</article>
 
 <?php get_footer(); ?>

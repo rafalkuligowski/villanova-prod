@@ -26,6 +26,11 @@
         border-radius: 30px;
         margin-bottom: 20px;
       }
+      .content {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+      }
       .title{
         width: 100%;
         font-size: 18px;
@@ -36,13 +41,16 @@
           text-decoration: underline;
         }
       }
+      .button {
+          margin: 15px 0;
+      }
       .excerpt{
         margin: 12px 0;
         width: 100%;
         font-size: 14px;
         color: #8d8d8d;
-        flex-grow: 1;
         line-height: 1.4;
+        flex-grow: 1;
         &:hover{
           text-decoration: underline;
         }

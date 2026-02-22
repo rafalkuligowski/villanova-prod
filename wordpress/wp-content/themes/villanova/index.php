@@ -9,7 +9,7 @@
                 $short_description = get_field('short_description', 26);
 
                 if (!empty( $short_description)) : ?>
-                    <p class="banner-description"><?php echo esc_html( $short_description ); ?></p>
+                    <div class="banner-description"><?php echo wp_kses_post( $short_description ); ?></div>
                 <?php endif; ?>
 
                 <?php if (function_exists('custom_breadcrumbs')) custom_breadcrumbs(); ?>
@@ -29,23 +29,29 @@
                 <?php if ( $the_query->have_posts() ) : ?>
                     <div class="posts-wrapper">
                         <?php $i = 0; ?>
-                        <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-                            <a href="<?php echo get_permalink(); ?>" class="post">
-                                <div class="image" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');"></div>
-                                <div class="title"><?php the_title(); ?></div>
-                                <div class="excerpt">
-                                    <?php echo wp_trim_words( get_the_excerpt(), 20, '…' ); ?>
-                                </div>
-                                <div class="date">
-                                    Dodano dnia: <?php echo get_the_date(); ?>
-                                </div>
-                                <button class="button clear dark" style="margin: 15px 0;">Czytaj więcej</button>
-                            </a>
+                        <?php while ( $the_query->have_posts() ) : $the_query->the_post();
+                        $args = [
+                            'link'  => get_permalink(),
+                            'thumb' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
+                            'title' => get_the_title(),
+                            'short' => get_the_excerpt(),
+                            'date'  => get_the_date(),
+                        ];
+
+                        get_template_part('template-parts/post-card', null, $args);
+                        ?>
+
                         <?php $i++; ?>
                         <?php endwhile; ?>
                     </div>
                     <div class="pagination">
-                        <?php wp_pagenavi(); ?>
+                        <?php
+                        the_posts_pagination([
+                            'mid_size'  => 2,
+                            'prev_text' => '«',
+                            'next_text' => '»',
+                        ]);
+                        ?>
                     </div>
                     <?php wp_reset_postdata(); ?>
 

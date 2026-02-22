@@ -28,10 +28,12 @@
 
                 <?php if ( $the_query->have_posts() ) : ?>
                     <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-                        <div class="service">
+                        <div class="service service-card">
                             <a href="<?php echo get_permalink(); ?>">
-                                <div class="photo" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
-                                    <div class="filter"></div>
+                                <div class="photo-outer">
+                                    <div class="photo" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
+                                        <div class="filter"></div>
+                                    </div>
                                 </div>
                                 <div class="details">
                                     <h2 class="title"><?php the_title(); ?></h2>
@@ -97,7 +99,9 @@
                 </div>
             </div>
             <!--TODO: Podtytuł - zmienić treść w panelu-->
-            <h2 class="page-services-title">Podtytuł</h2>
+            <h2 class="page-services-title">
+                <?php echo esc_html( pll_e('Tytuł h2 dla strony usługi') ); ?>
+            </h2>
             <p class="description"><?php echo get_field('short_description'); ?></p>
         </div>
     </div>

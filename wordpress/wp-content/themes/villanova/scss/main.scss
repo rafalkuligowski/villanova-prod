@@ -10,6 +10,10 @@
 @font-face {
   font-family: "Montserrat";
   src: url("../assets/fonts/Montserrat.ttf");
+  font-display: swap;
+}
+html {
+    scroll-behavior: smooth;
 }
 
 body{
@@ -37,7 +41,7 @@ a{
   margin-bottom: 20px;
 }
 
-#header{
+/* #header{
   width: 100%;
   position: fixed;
   left: 50%;
@@ -229,17 +233,7 @@ a{
       animation-duration: .5s;
     }
   }
-}
-
-@keyframes showmenu {
-  from {left: -100%;}
-  to {left: 0;}
-}
-
-@keyframes hidemenu {
-  from {left: 0;}
-  to {left: -100%;}
-}
+} */
 
 .container{
   width: 100%;
@@ -304,6 +298,7 @@ a{
   font-weight: 500;
   transition: .5s;
   cursor: pointer;
+  display: block;
   &.filled.primary{
     background: #DDD8D4;
     color: #1E1E1E;
@@ -343,6 +338,10 @@ a{
       border-bottom: 1px solid #4b4b4b;
     }
   }
+  &.clear.dark{
+      background: rgb(239, 239, 239);
+  }
+
   &.outline.primary{
     background: none;
     color: #1E1E1E;
