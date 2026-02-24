@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<div class="wrapper">
+<div class="wrapper page-post">
     <div class="page-banner" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
         <div class="mask"></div>
         <div class="container">

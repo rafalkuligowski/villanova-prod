@@ -11,6 +11,9 @@
         </div>
     </div>
     <div class="container">
+        <?php if ( $excerpt = get_post()->post_excerpt ) : ?>
+            <p class="lead"><?php echo esc_html( $excerpt ); ?></p>
+        <?php endif; ?>
 
         <?php
         $content = get_the_content();

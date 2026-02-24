@@ -99,6 +99,7 @@
                     <?php endif; ?>
                 </div>
                 <script>
+                (function($) {
                     $('.team-slider').slick({
                         slidesToShow: 4,
                         slidesToScroll: 4,
@@ -130,6 +131,7 @@
                             }
                         ]
                     });
+                })(jQuery);
                 </script>
             </div>
         </section>
@@ -161,6 +163,7 @@
                         <?php endwhile; ?>
                     </div>
                     <script>
+                    (function($) {
                         $('.media-slider').slick({
                             slidesToShow: 5,
                             slidesToScroll: 1,
@@ -183,6 +186,7 @@
                                 }
                             ]
                         });
+                    })(jQuery);
                     </script>
                 <?php wp_reset_postdata(); ?>
 

@@ -4,3 +4,19 @@
 @forward "services";
 @forward "metamorphosis";
 @forward "home";
+
+
+.single-post,
+.page-service {
+    .lead {
+        font-size: 1.225rem;
+        line-height: 1.6;
+        color: #1e1e1e;
+        font-size: 22px;
+        margin-block: 42px;
+        @media all and (max-width: 680px) {
+            font-size: 18px;
+            margin-block: 28px;
+        }
+    }
+}

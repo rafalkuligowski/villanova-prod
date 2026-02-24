@@ -1,4 +1,4 @@
-.single-post {
+.page-post {
     .post-container {
         display: flex;
         justify-content: space-between;
@@ -7,12 +7,13 @@
             width: 300px;
             flex-shrink: 0;
         }
-        .lead {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                       "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-size: 1.225rem;
-            line-height: 1.4;
-            color: #1e1e1e;
+    }
+    .content {
+        h2 {
+            line-height: 1.5;
+        }
+        p, li {
+            line-height: 1.5;
         }
     }
     .post-banner {
