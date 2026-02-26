@@ -3,7 +3,7 @@
     border-radius: 30px;
     background: #F5F2EF;
     margin: 10px;
-    padding-bottom: 40px;
+    padding-bottom: 25px;
     position: relative;
     transition: 0.5s;
     display: block;
@@ -14,6 +14,10 @@
     .photo-outer {
         overflow: hidden;
         border-radius: 30px;
+    }
+    .show-more-services {
+        margin: 15px 15px 0;
+        display: block;
     }
     .photo {
         width: 100%;
@@ -50,7 +54,7 @@
         li {
             padding: 2px 0;
             margin: 2px 0;
-            font-size: 13px;
+            font-size: 14px;
         }
         a:hover {
             text-decoration: underline;

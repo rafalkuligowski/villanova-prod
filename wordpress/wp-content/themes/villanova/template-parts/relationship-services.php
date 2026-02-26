@@ -62,6 +62,7 @@ if( $relationship_services ) {
                     'link'  => get_permalink($post_id),
                     'thumb' => get_the_post_thumbnail_url($post_id, 'medium'),
                     'short' => get_field('short-description', $post_id),
+                    'excerpt' => get_the_excerpt( $post_id),
                 ];
 
                 get_template_part('template-parts/service-card', null, $args);

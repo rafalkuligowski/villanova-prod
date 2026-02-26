@@ -36,15 +36,45 @@ const faq = {
             }
         }
     };
+    const pricingPage = {
+        init: () => {
+            if ($("#pricing").length) {
+                $(document).on("click", ".price-category-header", function (e) {
+                    $(e.target).closest(".price-category").find(".pricing-services").slideToggle();
+                    $(e.target).closest(".price-category").toggleClass("open");
+                })
+            }
+        }
+    };
+
+    const showMoreServices = {
+        init: () => {
+            if ($(".page-services").length) {
+                $(document).on("click", ".show-more-services", function (e) {
+                    const $btn = $(this);
+                    const $items = $btn.closest(".service-card").find(".hidden-service");
+
+                    $btn.toggleClass("hidden-services-btn");
+                    $btn.text($btn.hasClass("hidden-services-btn") ? "Zobacz wszystkie" : "Zwiń");
+
+                    $items.fadeToggle(300);
+                })
+            }
+        }
+    };
 
     function solidgroupDomReady(fn) {
         if (typeof fn !== 'function') return;
         if (document.readyState === 'interactive' || document.readyState === 'complete') return fn();
         document.addEventListener('DOMContentLoaded', fn, false);
-    }
+    };
+
+
 
     solidgroupDomReady(function () {
         faq.init();
         mobileMenu.init();
+        pricingPage.init();
+        showMoreServices.init();
     });
 })(jQuery);

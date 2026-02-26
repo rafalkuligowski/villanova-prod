@@ -37,7 +37,8 @@
                                 </div>
                                 <div class="details">
                                     <h2 class="title"><?php the_title(); ?></h2>
-                                    <div class="description"><?php echo get_field('short-description'); ?></div>
+                                    <div class="description"><?php echo esc_html(get_the_excerpt()); ?></div>
+
                                     <div class="show-more"><?php echo pll_e('Czytaj więcej');?></div>
                                 </div>
                             </a>
@@ -47,23 +48,28 @@
                                     'post_type'      => 'usluga',
                                     'posts_per_page' => -1,
                                     'post_parent'    => get_the_ID(),
-                                    'orderby' => 'date',
-                                    'order' => 'DESC',
+                                    'orderby' => 'menu_order',
+                                    'order' => 'ASC',
                                 );
                                 $child_query = new WP_Query($child_args);
                                 ?>
                                 <?php if ($child_query->have_posts()) : ?>
                                     <ul class="child-services">
-                                        <?php while ($child_query->have_posts()) : $child_query->the_post(); ?>
-                                            <li>
+                                        <?php $i = 0; while ($child_query->have_posts()) : $child_query->the_post(); $i++ ?>
+                                            <li <?php if ($i > 4) echo 'class="hidden-service" style="display:none;"'; ?>>
                                                 <a href="<?php echo esc_url(get_permalink()); ?>">
                                                     <?php the_title(); ?>
                                                 </a>
                                             </li>
                                         <?php endwhile; ?>
                                     </ul>
-                                    <?php wp_reset_postdata(); ?>
+                                    <?php if ($i > 4) : ?>
+                                        <button class="button outline primary small show-more-services hidden-services-btn">
+                                            <?php echo esc_html( pll_e('Zobacz wszystkie') ); ?>
+                                        </button>
+                                    <?php endif; ?>
                                 <?php endif; ?>
+                                <?php wp_reset_postdata(); ?>
                             </div>
                         </div>
                     <?php endwhile; ?>

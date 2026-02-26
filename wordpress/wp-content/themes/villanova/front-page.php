@@ -95,6 +95,7 @@
                                 'thumb' => get_the_post_thumbnail_url($post),
                                 'title' => get_the_title($post),
                                 'short' => get_field('short-description', $post->ID),
+                                'excerpt' => get_the_excerpt( $post->ID),
                             ];
 
                             get_template_part('template-parts/service-card', null, $args);

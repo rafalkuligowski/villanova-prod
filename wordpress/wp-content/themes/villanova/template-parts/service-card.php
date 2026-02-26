@@ -3,6 +3,7 @@ $link  = $args['link']  ?? '';
 $thumb = $args['thumb'] ?? '';
 $title = $args['title'] ?? '';
 $short = $args['short'] ?? '';
+$excerpt = $args['excerpt'] ?? '';
 ?>
 
 <div class="service">
@@ -19,9 +20,9 @@ $short = $args['short'] ?? '';
         <div class="details">
             <h3 class="title"><?php echo esc_html($title); ?></h3>
 
-            <?php if ($short): ?>
+            <?php if ($excerpt): ?>
                 <div class="description">
-                    <?php echo esc_html(mb_strimwidth( wp_strip_all_tags($short), 0, 200, '…' )); ?>
+                    <?php echo esc_html($excerpt); ?>
                 </div>
             <?php endif; ?>
 
